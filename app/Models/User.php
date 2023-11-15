@@ -66,5 +66,10 @@ class User extends Authenticatable
         return $this->belongsTo(UnitKerja::class, 'unit_kerja', 'nama_unit_kerja');
     }
 
+    public function onboardings()
+    {
+        return $this->belongsToMany(onboarding::class, 'onboarding_participant');
+    }
+
     
 }

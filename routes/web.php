@@ -5,6 +5,7 @@ use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\AssignTagController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -39,10 +40,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('assignpermission',AssignPermissionController::class);
     Route::resource('content',ContentController::class);
     Route::resource('guide',GuideController::class);
-    Route::resource('tag',TagController::class);
-    Route::resource('assigntag',AssignTagController::class);
+
 
     Route::get('/search',[GuideController::class, 'search']);
+
+    Route::resource('onboarding',OnboardingController::class);
 
     // Route::resource('profile',ProfileController::class);
 

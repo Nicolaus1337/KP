@@ -101,7 +101,14 @@
                     </li>
                     @endcan
 
-                   
+                    @can('read onboarding')
+                    <li class="{{request()->segment(1)== 'onboarding' ? 'active open' : ''}}">
+                        <a href="{{ route('onboarding.index') }}" class="link">
+                                <i class="ti-book"></i>
+                                <span>Onboarding</span> 
+                            </a>
+                    </li>
+                    @endcan
                 
                     
                     
