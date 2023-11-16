@@ -26,5 +26,10 @@ class Content extends Model
     {
         return $this->hasOne(Guide::class);
     }
+
+    public function onboardings()
+    {
+        return $this->belongsToMany(onboarding::class, 'onboarding_content');
+    }
 }
 

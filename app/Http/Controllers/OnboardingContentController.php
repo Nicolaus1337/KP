@@ -20,7 +20,7 @@ class OnboardingContentController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**

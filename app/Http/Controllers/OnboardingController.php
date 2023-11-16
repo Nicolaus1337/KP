@@ -6,6 +6,8 @@ use App\DataTables\onboardingDataTable;
 use App\Models\onboarding;
 use App\Http\Requests\StoreonboardingRequest;
 use App\Http\Requests\UpdateonboardingRequest;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class OnboardingController extends Controller
@@ -32,12 +34,31 @@ class OnboardingController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::User()->name;
+        
+        $user = Auth::user()->roles;
+        $decodedRoles = json_decode($user);
+        $roleName = $decodedRoles[0]->name;
+
         $onboarding = Onboarding::create([
             'judul' => 'Onboarding Activity',
             'status' => 'draft',
+            'start' => now(),
+            'end' => now()->addDays(30), 
+            'created_by' =>  $roleName,
+            'onboarding_image' => '',
+            'description' => ''
 
             
+        ]);
+
+        $onboarding->update([
+            'start' => Carbon::parse($onboarding->start)->format('Y-m-d H:i:s'),
+            'end' => Carbon::parse($onboarding->end)->format('Y-m-d H:i:s'),
+        ]);
+
+        return response()->json([
+            'status' =>'success',
+            'message' =>'data created succesfully'
         ]);
     }
 
@@ -54,7 +75,8 @@ class OnboardingController extends Controller
      */
     public function edit(onboarding $onboarding)
     {
-        //
+        $this->authorize('update onboarding');
+        return view('admin.Onboarding-setting', compact('onboarding'));
     }
 
     /**

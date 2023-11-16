@@ -10,12 +10,15 @@
             aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <div class="row">
+        <div class="row ms-1">
             
             @foreach ($roles as $role)
-                <div>
-                <input type="checkbox" name="roles[]" value="{{ $role->id }}" {{ in_array($role->id, $userRoles) ? 'checked' : '' }}>
-                    {{ $role->name }}
+                <div  class="form-check">
+                <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" {{ in_array($role->id, $userRoles) ? 'checked' : '' }}>
+                <label class="form-check-label" for="flexCheckDefault">
+                {{ $role->name }}
+                </label>
+                
                 </div>
             @endforeach
 

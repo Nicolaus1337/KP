@@ -16,12 +16,12 @@ return new class extends Migration
            
             $table->string('judul');
             $table->enum('status', ['draft', 'published']);
-            $table->date('start');
-            $table->date('end');
-            $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->string('onboarding_image');
-            $table->longText('description');
+            $table->date('start')->nullable();
+            $table->date('end')->nullable();
+            $table->string('created_by');
+           
+            $table->string('onboarding_image')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

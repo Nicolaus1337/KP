@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('onboarding_participant_contents', function (Blueprint $table) {
-            $table->unsignedBigInteger('onboarding_participant_id');
-            $table->unsignedBigInteger('onboarding_content_id');
+            $table->id();
+            $table->unsignedBigInteger('ob_participant_id');
+            $table->unsignedBigInteger('ob_content_id');
 
-            $table->foreign('onboarding_participant_id')->references('id')->on('onboarding_participant')->onDelete('cascade');
-            $table->foreign('onboarding_content_id')->references('id')->on('onboarding_content')->onDelete('cascade');
+            $table->foreign('ob_participant_id')->references('id')->on('onboarding_participants')->onDelete('cascade');
+            $table->foreign('ob_content_id')->references('id')->on('onboarding_contents')->onDelete('cascade');
             $table->enum('status', ['done', 'not_done']);
         });
     }

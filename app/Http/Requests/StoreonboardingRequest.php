@@ -21,9 +21,6 @@ class StoreonboardingRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', Rule::unique('roles')->ignore($this->role)],
-            'guard_name' => 'required'
-         ];
+        return [];
     }
 }

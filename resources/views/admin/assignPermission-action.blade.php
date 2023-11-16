@@ -12,15 +12,20 @@
     <div class="modal-body">
         <div class="row">
 
+        
+        
+        
         <div class="scrollable-checkbox-list">
-            @foreach ($permissions as $permission)
-                <div>
-                <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>
-                    {{ $permission->name }}
+        @foreach ($permissions as $permission)
+                <div  class="form-check">
+                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>
+                <label class="form-check-label" for="flexCheckDefault">
+                {{ $permission->name }}
+                </label>
+                
                 </div>
             @endforeach
-        </div>
-
+            </div>
             
         </div>
     </div>

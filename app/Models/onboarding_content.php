@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class onboarding_content extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 }

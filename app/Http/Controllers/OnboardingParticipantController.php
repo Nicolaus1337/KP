@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\onboarding;
 use App\Models\onboarding_participant;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OnboardingParticipantController extends Controller
@@ -20,7 +22,9 @@ class OnboardingParticipantController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        
+        return view('admin.Onboarding-participant', ['ob_participant' =>new onboarding_participant()], compact('users'));
     }
 
     /**
@@ -42,9 +46,11 @@ class OnboardingParticipantController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(onboarding_participant $onboarding_participant)
+    public function edit(onboarding $onboarding_participant)
     {
-        //
+        $users = User::all();
+        $onboarding_participant = $onboarding_participant->participants->pluck('id')->toArray();
+        return view('admin.Onboarding-participant', compact('assignrole','roles', 'userRoles'));
     }
 
     /**

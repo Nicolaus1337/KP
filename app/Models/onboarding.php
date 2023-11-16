@@ -14,6 +14,11 @@ class onboarding extends Model
         'judul', 'status', 'start', 'end', 'created_by', 'onboarding_image', 'description'
     ];
     
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function contents()
     {
         return $this->belongsToMany(Content::class, 'onboarding_content');

@@ -6,15 +6,13 @@
 @endpush
 @section('content')
 <div class="main-content">
-    <div class="title">
-        Content
-    </div>
+    
     <div class="content-wrapper">
         <div class="row same-height">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Tabel Content</h4>
+                        <h4>Tabel Onboarding</h4>
                     </div>
                     <div class="card-body">
                         @if (auth()->user()->can('create onboarding'))
@@ -28,23 +26,7 @@
         </div>
     </div>
    
-    <div class="modal fade" id="modalAction" tabindex="-1" aria-labelledby="extraLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl" style="min-width:95%;">
-                    
-                </div>
-            </div>
-
-    <div class="modal top fade"
-            id="modalAction2"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-            data-mdb-backdrop="true"
-            data-mdb-keyboard="true">
-        <div class="modal-dialog modal-lg" style="min-width:95%;">
-            
-        </div>
-        </div>
+   
 
 </div>
 @endsection
@@ -60,14 +42,18 @@
 <script src="../vendor/sweetalert2/sweetalert2.all.min.js"></script>
         {{ $dataTable->scripts()}}
 <script>
-    const modal = new bootstrap.Modal($('#modalAction'))
-    const modal2 = new bootstrap.Modal($('#modalAction2'))
-    
+  
+ 
 
     $('.btn-add').on('click', function(){
+
+        
         $.ajax({
-            method: 'get',
-            url: `{{ url('onboarding/create') }}`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            method: 'POST',
+            url: `{{ url('onboarding') }}`,
             success: function(res){
                 window.LaravelDataTables["onboarding-table"].ajax.reload()
                
@@ -75,141 +61,24 @@
          })
     })
 
-
-
-    
-
-    function store(){
-            $('#formAction').on('submit',function(e){
-                e.preventDefault()
-                const _form = this
-                const formData = new FormData(_form)
-
-                const url = this.getAttribute('action')
-
-                $.ajax({
-                        method: 'POST',
-                        url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(res){
-                            window.LaravelDataTables["content-table"].ajax.reload()
-                                modal.hide()
-                            },
-                            error: function(res){
-                            let errors = res.responseJSON?.errors
-
-                            $(_form).find('.text-danger.text-small').remove()
-                            if(errors){
-                                for(const [key,value] of Object.entries(errors)){
-                                    $(`[name='${key}']`).parent().append(`<span class="text-danger text-small">${value}</span>`)
-                                }
-                            }
-                            console.log(errors);
-                        }
-                        })
-            })
-         }
-    
-    $('#content-table').on('click','.action', function(){
+    $('#onboarding-table').on('click','.action', function(){
          let data = $(this).data()
          let id = data.id
          let jenis = data.jenis
 
-         if(jenis == 'delete'){
-            Swal.fire({
-                title:"Are you sure?",
-                text:"You won't be able to revert this!",
-                icon:"warning",
-                showCancelButton:!0,
-                confirmButtonColor:"#3085d6",
-                cancelButtonColor:"#d33",
-                confirmButtonText:"Yes, delete it!"
-            }).then((result)=>{
-                if(result.isConfirmed){
-                    $.ajax({
-                        method: 'DELETE',
-                        url: `{{ url('content/') }}/${id}`,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(res){
-                            window.LaravelDataTables["content-table"].ajax.reload()
-                            Swal.fire(
-                                "Deleted!",
-                                res.message,
-                                res.status
-                                )
-                        }
-                    })
-
-
-                    
-                }
-
-                })
-            return
-        }
+         
          
          if(jenis == 'edit'){ 
             $.ajax({
             method: 'get',
-            url: `{{ url('content/') }}/${id}/edit`,
+            url: `{{ url('onboarding/') }}/${id}/edit`,
             success: function(res){
-                $('#modalAction').find('.modal-dialog').html(res)
-                modal.show()
-                $('#modalAction').on('shown.bs.modal', function () {
-                    $('#description').summernote({
-                        placeholder: 'description...',
-                        tabsize: 2,
-                        height: 300
-                    });
-                    let buttons = $('.note-editor button[data-toggle="dropdown"]');
-    
-                    buttons.each((key, value)=>{
-                    $(value).on('click', function(e){
-                        $(this).attr('data-bs-toggle', 'dropdown')
-                        console.log()
-                        ata('id', 'dropdownMenu');
-                    })
-                    })
-                });
-                document.getElementById('type').addEventListener('change', function() {
-                    var selectedFileType = this.value;
-                    var fileInputs = document.querySelectorAll('.file-input');
-
-                    for (var i = 0; i < fileInputs.length; i++) {
-                        fileInputs[i].style.display = 'none';
-                    }
-
-                    if (selectedFileType === 'text') {
-                        document.getElementById('text').style.display = 'block';
-                    } else if (selectedFileType === 'pdf') {
-                        document.getElementById('pdf').style.display = 'block';
-                    } else if (selectedFileType === 'video') {
-                        document.getElementById('video').style.display = 'block';
-                    }
-                });
-                store()
+                window.location.href = `{{ url('onboarding/') }}/${id}/edit`;
             }
          })
         }
 
-        if(jenis == 'view'){ 
-            $.ajax({
-            method: 'get',
-            url: `{{ url('content/') }}/${id}`,
-            success: function(res){
-                $('#modalAction2').find('.modal-dialog').html(res)
-                modal2.show()
-                
-            }
-         })
-        }
+        
 
        
          
@@ -218,5 +87,11 @@
 
          
      })
+
+    
+
+    
+         
+     
 </script>
 @endpush
