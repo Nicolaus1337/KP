@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('onboarding',OnboardingController::class);
     Route::resource('ob_participant',OnboardingParticipantController::class);
-    Route::resource('ob_content',OnboardingParticipantController::class);
+  
 
     // Route::resource('profile',ProfileController::class);
 

@@ -46,20 +46,48 @@ class OnboardingParticipantController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(onboarding $onboarding_participant)
+    public function edit(onboarding $ob_participant)
     {
         $users = User::all();
-        $onboarding_participant = $onboarding_participant->participants->pluck('id')->toArray();
-        return view('admin.Onboarding-participant', compact('assignrole','roles', 'userRoles'));
+        $ob_participants = $ob_participant->participants->pluck('id')->toArray();
+        return view('admin.Onboarding-participant', compact('ob_participant','users', 'ob_participants'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, onboarding_participant $onboarding_participant)
+    public function update(Request $request, onboarding $ob_participant)
     {
-        //
+            
+
+            $selectedParticipantIds = $request->input('user_id', []);
+    
+           
+            $obParticipants = $ob_participant->participants->pluck('id')->toArray();
+    
+            
+            $participantsToRemove = array_diff($obParticipants, $selectedParticipantIds);
+    
+           
+            foreach ($participantsToRemove as $participantId) {
+                $user = User::find($participantId);
+                $ob_participant->participants()->detach($user);
+            }
+    
+            
+            foreach ($selectedParticipantIds as $participantId) {
+                $user = User::find($participantId);
+                $ob_participant->participants()->sync($user);
+            }
+            
+    
+            return response()->json([
+                'status' => 'success',
+                'message' => 'data updated'
+            ]);
     }
+    
+
 
     /**
      * Remove the specified resource from storage.

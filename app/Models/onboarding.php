@@ -21,12 +21,12 @@ class onboarding extends Model
 
     public function contents()
     {
-        return $this->belongsToMany(Content::class, 'onboarding_content');
+        return $this->belongsToMany(Content::class, 'onboarding_contents');
     }
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'onboarding_participant');
+        return $this->belongsToMany(User::class, 'onboarding_participants');
     }
 
 }

@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreign('ob_participant_id')->references('id')->on('onboarding_participants')->onDelete('cascade');
             $table->foreign('ob_content_id')->references('id')->on('onboarding_contents')->onDelete('cascade');
-            $table->enum('status', ['done', 'not_done']);
+            $table->enum('status', ['done', 'not done']);
         });
     }
 

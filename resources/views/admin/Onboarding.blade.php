@@ -61,32 +61,7 @@
          })
     })
 
-    $('#onboarding-table').on('click','.action', function(){
-         let data = $(this).data()
-         let id = data.id
-         let jenis = data.jenis
-
-         
-         
-         if(jenis == 'edit'){ 
-            $.ajax({
-            method: 'get',
-            url: `{{ url('onboarding/') }}/${id}/edit`,
-            success: function(res){
-                window.location.href = `{{ url('onboarding/') }}/${id}/edit`;
-            }
-         })
-        }
-
-        
-
-       
-         
-
-        
-
-         
-     })
+    
 
     
 

@@ -6,11 +6,11 @@
 @endpush
 @section('content')
 <div class="main-content">
-<form id="formAction" action="{{ $onboarding->id ?  route('onboarding.update', $onboarding->id) : route('onboarding.store')}}" method="post" enctype="multipart/form-data">
+<form action="{{route('onboarding.update', $onboarding->id)}}" method="post" enctype="multipart/form-data">
 @csrf
-@if ($onboarding->id)
+
 @method('put')
-@endif
+
                 <div class="container">
                             <div class="row">
                                 <div class="col-md-4">
@@ -49,26 +49,34 @@
                                
                                 
 
-                                <div>
+                                <div style="
+  height: 200px;
+  overflow: auto;">
                                     <table class="table text-center">
                                             <thead class="table-secondary">
                                                 <tr>
                                                     <th>Partisipan</th>
                                                 </tr>
                                             </thead>
-                                            <tbody> 
+                                            <tbody class="text-start"> 
+                                                
+
+                                                @foreach ($users as $user)
                                                 <tr>
-                                                    <td>
-                                                       
-                                                        <button type="button"  data-id='{{$onboarding->id}}' class="btn btn-primary btn-add">Tambah Partisipan</button>
-                                                        
-                                                    </td>
+                                                <td>
+                                                    <div  class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" {{ in_array($user->id, $ob_participants) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                    {{ $user->name }}
+                                                    </label>
+
+                                                    </div>
+                                                    
+                                                </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        testing
-                                                    </td>
-                                                </tr>
+
+                                                @endforeach
+
                                             </tbody>
                                     </table>
                                 </div>
@@ -108,26 +116,34 @@
                                     </div>
                                 </div>
 
-                                <div>
+                                <div style="
+                                            height: 200px;
+                                            overflow: auto;">
                                     <table class="table text-center">
                                             <thead class="table-secondary">
                                                 <tr>
-                                                    <th>Cotent</th>
+                                                    <th>Contents</th>
                                                 </tr>
                                             </thead>
-                                            <tbody> 
+                                            <tbody class="text-start"> 
+                                                
+
+                                                @foreach ($contents as $content)
                                                 <tr>
-                                                    <td>
-                                                        
-                                                        <button type="button" class="btn btn-primary btn-add2">Tambah Content</button>
-                                                        
-                                                    </td>
+                                                <td>
+                                                    <div  class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}" {{ in_array($content->id, $ob_contents) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                    {{ $content->title }}
+                                                    </label>
+
+                                                    </div>
+                                                    
+                                                </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        testing
-                                                    </td>
-                                                </tr>
+
+                                                @endforeach
+
                                             </tbody>
                                     </table>
                                 </div>
@@ -142,11 +158,7 @@
     </div>
    
     </form>
-    <div class="modal fade" id="modalAction" tabindex="-1"aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    
-                </div>
-        </div>
+   
 </div>
 @endsection
 @push('js')
@@ -160,94 +172,34 @@
 
 <script src="../vendor/sweetalert2/sweetalert2.all.min.js"></script>
         
+
 <script>
-    const modal = new bootstrap.Modal($('#modalAction'))
+    
+    $(document).ready(function(){
+ 
+ // image preview
+ $("#onboarding_image").change(function(){
+     let reader = new FileReader();
 
-    $('#formAction').on('submit',function(e){
-                e.preventDefault()
-                const _form = this
-                const formData = new FormData(_form)
+     reader.onload = (e) => {
+         $("#image_preview_container").attr('src', e.target.result);
+     }
+     reader.readAsDataURL(this.files[0]);
+ })
 
-                const url = this.getAttribute('action')
+ 
+})
+    
+            
 
-                $.ajax({
-                        method: 'POST',
-                        url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(res){
-                            
-                            },
-                            error: function(res){
-                            let errors = res.responseJSON?.errors
+            
+         
 
-                            $(_form).find('.text-danger.text-small').remove()
-                            if(errors){
-                                for(const [key,value] of Object.entries(errors)){
-                                    $(`[name='${key}']`).parent().append(`<span class="text-danger text-small">${value}</span>`)
-                                }
-                            }
-                            console.log(errors);
-                        }
-                        })
-            })
-        function store(){
-            $('#formAction').on('submit',function(e){
-                e.preventDefault()
-                const _form = this
-                const formData = new FormData(_form)
+   
 
-                const url = this.getAttribute('action')
+    
 
-                $.ajax({
-                        method: 'POST',
-                        url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(res){
-                            location.reload();
-                            modal.hide()
-                            },
-                            error: function(res){
-                            let errors = res.responseJSON?.errors
-
-                            $(_form).find('.text-danger.text-small').remove()
-                            if(errors){
-                                for(const [key,value] of Object.entries(errors)){
-                                    $(`[name='${key}']`).parent().append(`<span class="text-danger text-small">${value}</span>`)
-                                }
-                            }
-                            console.log(errors);
-                        }
-                        })
-            })
-         }
-
-    $('.btn-add').on('click', function(){
-        let data = $(this).data()
-        let id = data.id
-
-       
-
-         $.ajax({
-            method: 'get',
-            url: `{{ url('ob_participant/') }}/${id}/edit`,
-            success: function(res){
-                $('#modalAction').find('.modal-dialog').html(res)
-                modal.show()
-                store()
-            }
-         })
-    })
-
+   
 </script>
 
 @endpush

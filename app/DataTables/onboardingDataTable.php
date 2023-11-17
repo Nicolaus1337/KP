@@ -29,10 +29,12 @@ class onboardingDataTable extends DataTable
                 $action =' ';
                 
                 if(Gate::allows('update onboarding')){
-                    $action ='<button type="button" data-id='.$row->id.' data-jenis="edit" class="btn btn-success btn-sm action"><i class="ti-pencil"></i> Pengaturan </button>';
+                    $editUrl = route('onboarding.edit', $row->id);
+
+                    $action = "<a href='$editUrl' class='btn btn-success btn-sm action'>Setting</a>";
                 }
                 if(Gate::allows('read onboarding')){
-                    $action .=' <button type="button" data-id='.$row->id.' data-jenis="view" class="btn btn-primary btn-sm action"> Kerjakan </button>';
+                    $action .=' <button type="button" class="btn btn-primary btn-sm action"> Kerjakan </button>';
                 }
                
                 

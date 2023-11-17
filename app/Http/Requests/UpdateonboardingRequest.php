@@ -24,11 +24,13 @@ class UpdateonboardingRequest extends FormRequest
     {
         return [
             'judul' => ['required', Rule::unique('roles')->ignore($this->role)],
-            'status' =>  ['string', 'max:255'],
+            'status' =>  ['string'],
             'start' => 'required',
             'end' => 'required',
-            'onboarding_image' =>  ['string', 'max:255'],
-            'description' =>  ['longText', 'max:255'],
+            'onboarding_image' =>  ['image', 'max:1000'],
+            'description' =>  ['longText'],
+            'user_id'=>'required',
+            'content_id'=>'required'
 
          ];
     }

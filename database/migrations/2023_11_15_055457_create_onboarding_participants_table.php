@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreign('onboarding_id')->references('id')->on('onboardings')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('status', ['not_started', 'in_process', 'done']);
+            $table->enum('status', ['not started', 'in process', 'done']);
         });
     }
 

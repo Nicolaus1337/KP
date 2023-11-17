@@ -6,9 +6,13 @@ use App\DataTables\onboardingDataTable;
 use App\Models\onboarding;
 use App\Http\Requests\StoreonboardingRequest;
 use App\Http\Requests\UpdateonboardingRequest;
+use App\Models\Content;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OnboardingController extends Controller
 {
@@ -76,15 +80,77 @@ class OnboardingController extends Controller
     public function edit(onboarding $onboarding)
     {
         $this->authorize('update onboarding');
-        return view('admin.Onboarding-setting', compact('onboarding'));
+        $users = User::all();
+        $ob_participants = $onboarding->participants->pluck('id')->toArray();
+        $contents = Content::all();
+        $ob_contents = $onboarding->contents->pluck('id')->toArray();
+        return view('admin.Onboarding-setting', compact('onboarding','users','contents','ob_participants','ob_contents'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateonboardingRequest $request, onboarding $onboarding)
+    public function update(Request $request , onboarding $onboarding)
     {
-        //
+
+        $image = $request->input('onboarding_image');
+        
+        
+        $onboarding->judul = $request->input('judul');
+        $onboarding->description = $request->input('description');
+        $onboarding->status = "published";
+        $onboarding->start =$request->input('start');
+        $onboarding->end = $request->input('end');
+        $onboarding->onboarding_image = $image;
+        $onboarding->save();
+        
+        //handle onboarding participant
+        $selectedParticipantIds = $request->input('user_id', []);
+    
+           
+            $obParticipants = $onboarding->participants->pluck('id')->toArray();
+    
+            
+            $participantsToRemove = array_diff($obParticipants, $selectedParticipantIds);
+    
+           
+            foreach ($participantsToRemove as $participantId) {
+                $user = User::find($participantId);
+                $onboarding->participants()->detach($user);
+            }
+    
+            
+            foreach ($selectedParticipantIds as $participantId) {
+                $user = User::find($participantId);
+                $onboarding->participants()->sync($user);
+                $onboarding->participants()->sync([$user->id => ['status' => 'not started']]);
+            }
+
+        //handle onboarding content
+        $selectedContentIds = $request->input('content_id', []);
+    
+           
+            $obContents = $onboarding->contents->pluck('id')->toArray();
+    
+            
+            $contentsToRemove = array_diff($obContents, $selectedContentIds);
+    
+           
+            foreach ($contentsToRemove as $contentId) {
+                $content = Content::find($contentId);
+                $onboarding->contents()->detach($content);
+            }
+    
+            
+            foreach ($selectedContentIds as $contentId) {
+                $content = Content::find($contentId);
+                $onboarding->contents()->sync($content);
+
+            }
+
+        
+    return redirect()->route('onboarding.index');
+            
     }
 
     /**
