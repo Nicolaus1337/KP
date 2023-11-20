@@ -31,5 +31,16 @@ class Content extends Model
     {
         return $this->belongsToMany(onboarding::class, 'onboarding_content');
     }
+
+    public function onboardings2()
+    {
+        return $this->belongsToMany(onboarding::class, 'onboarding_participant_contents')->withPivot('status');
+    }
+
+    public function participants2()
+    {
+        return $this->belongsToMany(User::class, 'onboarding_participant_contents')->withPivot('status');
+    }
+
 }
 

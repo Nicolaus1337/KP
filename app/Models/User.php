@@ -25,20 +25,7 @@ class User extends Authenticatable
         'unit_kerja',
         'email',
         'password'
-        // 'profile_image',
-        // 'about_user',
-        // 'wa',
-        // 'birth_date',
-        // 'hobby',
-        // 'food',
-        // 'drink',
-        // 'film',
-        // 'interest',
-        // 'job_desc',
-        // 'personality',
-        // 'strength',
-        // 'weakness',
-        // 'comm_pref'
+        
 
     ];
 
@@ -68,8 +55,17 @@ class User extends Authenticatable
 
     public function onboardings()
     {
-        return $this->belongsToMany(onboarding::class, 'onboarding_participant');
+        return $this->belongsToMany(onboarding::class, 'onboarding_participants')->withPivot('status');
     }
 
+    public function onboardings2()
+    {
+        return $this->belongsToMany(onboarding::class, 'onboarding_participant_contents')->withPivot('status');
+    }
+   
+    public function contents2()
+    {
+        return $this->belongsToMany(Content::class, 'onboarding_participant_contents')->withPivot('status');
+    }
     
 }

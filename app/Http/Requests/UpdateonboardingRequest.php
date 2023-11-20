@@ -12,7 +12,7 @@ class UpdateonboardingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,12 +23,13 @@ class UpdateonboardingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'judul' => ['required', Rule::unique('roles')->ignore($this->role)],
+            'judul' => ['required'],
             'status' =>  ['string'],
             'start' => 'required',
             'end' => 'required',
             'onboarding_image' =>  ['image', 'max:1000'],
-            'description' =>  ['longText'],
+            'created_by' => 'required',
+            'description' =>  ['string'],
             'user_id'=>'required',
             'content_id'=>'required'
 

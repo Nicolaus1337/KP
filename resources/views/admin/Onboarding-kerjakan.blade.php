@@ -202,7 +202,7 @@
                                             <tbody class="text-start"> 
                                                 
                                             @if($onboarding->status == 'published')
-                                            @foreach ($onboarding->contents as $content)
+                                            @foreach ($contents as $content)
                                             <tr>
                                                 <td>
                                                     

@@ -57,6 +57,11 @@
             success: function(res){
                 window.LaravelDataTables["onboarding-table"].ajax.reload()
                
+                var lastRow = $('#onboarding-table').find('tbody tr').last();
+
+                
+                var settingButton = lastRow.find('.btn-setting');
+                settingButton.click();
             }
          })
     })

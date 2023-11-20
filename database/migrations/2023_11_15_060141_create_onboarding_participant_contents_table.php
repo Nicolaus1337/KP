@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('onboarding_participant_contents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ob_participant_id');
-            $table->unsignedBigInteger('ob_content_id');
+            $table->unsignedBigInteger('onboarding_id');
+            $table->unsignedBigInteger('content_id');
+            $table->unsignedBigInteger('participant_id');
 
-            $table->foreign('ob_participant_id')->references('id')->on('onboarding_participants')->onDelete('cascade');
-            $table->foreign('ob_content_id')->references('id')->on('onboarding_contents')->onDelete('cascade');
+            $table->foreign('onboarding_id')->references('id')->on('onboardings')->onDelete('cascade');
+            $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
+            $table->foreign('participant_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['done', 'not done']);
         });
     }

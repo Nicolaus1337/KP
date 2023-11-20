@@ -26,7 +26,19 @@ class onboarding extends Model
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'onboarding_participants');
+        return $this->belongsToMany(User::class, 'onboarding_participants')->withPivot('status');
     }
+
+    public function contents2()
+    {
+        return $this->belongsToMany(Content::class, 'onboarding_participant_contents')->withPivot('status');
+    }
+
+    public function participants2()
+    {
+        return $this->belongsToMany(User::class, 'onboarding_participant_contents')->withPivot('status');
+    }
+
+    
 
 }

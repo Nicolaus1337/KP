@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\onboarding;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -31,9 +32,10 @@ class onboardingDataTable extends DataTable
                 if(Gate::allows('update onboarding')){
                     $editUrl = route('onboarding.edit', $row->id);
 
-                    $action = "<a href='$editUrl' class='btn btn-success btn-sm action'>Setting</a>";
+                    $action = "<a href='$editUrl' class='btn btn-success btn-sm action btn-setting'>Setting</a>";
                 }
                 if(Gate::allows('read onboarding')){
+                    $editUrl = route('onboarding.edit', $row->id);
                     $action .=' <button type="button" class="btn btn-primary btn-sm action"> Kerjakan </button>';
                 }
                
@@ -47,7 +49,11 @@ class onboardingDataTable extends DataTable
      */
     public function query(onboarding $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+
+        
+
+        return $query;
     }
 
     /**
