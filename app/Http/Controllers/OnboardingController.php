@@ -62,7 +62,7 @@ class OnboardingController extends Controller
             'end' => Carbon::parse($onboarding->end)->format('Y-m-d H:i:s'),
         ]);
         
-        return redirect()->route('onboarding.edit', $onboarding->id);
+        return response()->json(['onboarding_id' => $onboarding->id]);
         
     }
 
@@ -140,7 +140,9 @@ class OnboardingController extends Controller
                 $participantsData[$user->id] = ['status' => 'not started'];
                 
             }
+            $userloginnow = auth()->user()->id;
             $onboarding->participants()->sync($participantsData);
+            $onboarding->participants()->attach($userloginnow);
 
         //handle onboarding content
         $selectedContentIds = $request->input('content_id', []);
@@ -167,17 +169,16 @@ class OnboardingController extends Controller
 
             $onboarding->contents()->sync($contentsData);
 
-            $contentsData2 = [];
-            $participantsData2 = [];
+            
             foreach ($selectedContentIds as $contentId) {
                 $content = Content::find($contentId);
                 foreach ($selectedParticipantIds as $participantId) {
                    
                     $user = User::find($participantId);
                     $onboarding->contents2()->attach($content, ['participant_id' => $user->id, 'status' =>'not done']);
-
+                   
                 }
-                
+                $onboarding->contents2()->attach($content, ['participant_id' => auth()->user()->id, 'status' => 'not done']);
             }
             
             

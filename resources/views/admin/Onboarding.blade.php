@@ -55,13 +55,10 @@
             method: 'POST',
             url: `{{ url('onboarding') }}`,
             success: function(res){
-                window.LaravelDataTables["onboarding-table"].ajax.reload()
-               
-                var lastRow = $('#onboarding-table').find('tbody tr').last();
+                var onboardingId = res.onboarding_id;
 
-                
-                var settingButton = lastRow.find('.btn-setting');
-                settingButton.click();
+            // Redirect to the edit page of the created onboarding
+            window.location.href = "{{ url('onboarding') }}/" + onboardingId + "/edit";
             }
          })
     })

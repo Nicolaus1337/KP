@@ -49,11 +49,12 @@ class onboardingDataTable extends DataTable
      */
     public function query(onboarding $model): QueryBuilder
     {
-        $query = $model->newQuery();
+        $loggedInUserId = Auth::id();
 
-        
-
-        return $query;
+        return $model->newQuery()
+        ->whereHas('participants', function ($query) use ($loggedInUserId) {
+            $query->where('user_id', $loggedInUserId);
+        });
     }
 
     /**
