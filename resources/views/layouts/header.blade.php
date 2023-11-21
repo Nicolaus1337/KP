@@ -5,7 +5,7 @@
                     
                 </div>
                 <div class="header-content">
-                <div class="theme-switch-icon"></div>
+                <div class="theme-switch-icon" hidden></div>
                 <form method="POST" action="{{ route('logout') }}">
                 @csrf
 

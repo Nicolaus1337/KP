@@ -35,8 +35,8 @@ class onboardingDataTable extends DataTable
                     $action = "<a href='$editUrl' class='btn btn-success btn-sm action btn-setting'>Setting</a>";
                 }
                 if(Gate::allows('read onboarding')){
-                    $editUrl = route('onboarding.edit', $row->id);
-                    $action .=' <button type="button" class="btn btn-primary btn-sm action"> Kerjakan </button>';
+                    $editUrl = route('onboarding.show', $row->id);
+                    $action .= " <a href='$editUrl' class='btn btn-primary btn-sm action btn-kerjakan'>Kerjakan</a>";
                 }
                
                 

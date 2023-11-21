@@ -105,7 +105,7 @@
                                                 <tr>
                                                 <td>
                                                     <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" {{ in_array($user->id, $ob_participants) ? 'checked' : '' }}>
+                                                    <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                     {{ $user->name }}
                                                     </label>
@@ -223,7 +223,7 @@
                                                 <tr>
                                                 <td>
                                                     <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}" {{ in_array($content->id, $ob_contents) ? 'checked' : '' }}>
+                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                     {{ $content->title }}
                                                     </label>

@@ -71,7 +71,15 @@ class OnboardingController extends Controller
      */
     public function show(onboarding $onboarding)
     {
-        //
+        $this->authorize('read onboarding');
+        
+        $contentdone = $onboarding->contents2()
+        ->where('participant_id', Auth::id())
+        ->wherePivot('status', 'done')
+        ->pluck('content_id')
+        ->toArray();
+
+        return view('admin.Onboarding-kerjakan', compact('onboarding', 'contentdone'));
     }
 
     /**
@@ -81,11 +89,9 @@ class OnboardingController extends Controller
     {
         $this->authorize('update onboarding');
         $users = User::all();
-        $ob_participants = $onboarding->participants->pluck('id')->toArray();
         $contents = Content::all();
-        $ob_contents = $onboarding->contents->pluck('id')->toArray();
         
-        return view('admin.Onboarding-setting', compact('onboarding','users','contents','ob_participants','ob_contents'));
+        return view('admin.Onboarding-setting', compact('onboarding','users','contents'));
     }
 
     /**
@@ -94,97 +100,117 @@ class OnboardingController extends Controller
     public function update(Request $request , onboarding $onboarding)
     {
 
-        if ($request->hasFile('onboarding_image')) {
-            $imagePath = 'storage/'.$request->onboarding_image;
-            # check whether the image exists in the directory
-            if (File::exists($imagePath)) {
-                # delete image
-                File::delete($imagePath);
-            }
-            $profile_image = $request->onboarding_image->store('onboarding_image', 'public');
-            $onboarding->onboarding_image = $profile_image;
-        }
+        if($onboarding->status == 'published'){
+            $selectedContentIds = $request->input('content_id', []);
 
-        
-
-        
-        
-        $onboarding->judul = $request->judul;
-        $onboarding->description = $request->description;
-        $onboarding->status = "published";
-        $onboarding->start = $request->start;
-        $onboarding->end = $request->end;
-       
-        $onboarding->save();
-        
-        //handle onboarding participant
-        $selectedParticipantIds = $request->input('user_id', []);
-        $participantsData = [];
-           
-            $obParticipants = $onboarding->participants->pluck('id')->toArray();
+            $user = auth()->user();
     
-            
-            $participantsToRemove = array_diff($obParticipants, $selectedParticipantIds);
-    
-           
-            foreach ($participantsToRemove as $participantId) {
-                $user = User::find($participantId);
-                $onboarding->participants()->detach($user);
-
-            }
-    
-            
-            foreach ($selectedParticipantIds as $participantId) {
-                $user = User::find($participantId);
-               
-                $participantsData[$user->id] = ['status' => 'not started'];
+            if ($onboarding->participants->contains($user)) {
+                foreach ($selectedContentIds as $contentId) {
+                    $content = Content::find($contentId);
+                    
+                    $onboarding->contents2()->wherePivot('participant_id', $user->id)->wherePivot('content_id', $content->id)->update(['status' => 'done']);
                 
-            }
-            $userloginnow = auth()->user()->id;
-            $onboarding->participants()->sync($participantsData);
-            $onboarding->participants()->attach($userloginnow);
-
-        //handle onboarding content
-        $selectedContentIds = $request->input('content_id', []);
-        $contentsData = [];
-
-           
-            $obContents = $onboarding->contents->pluck('id')->toArray();
-    
-            
-            $contentsToRemove = array_diff($obContents, $selectedContentIds);
-    
-           
-            foreach ($contentsToRemove as $contentId) {
-                $content = Content::find($contentId);
-                $onboarding->contents()->detach($content);
-            }
-    
-            
-            foreach ($selectedContentIds as $contentId) {
-                $content = Content::find($contentId);
-                $contentsData[] = $content->id;
-                
-            }
-
-            $onboarding->contents()->sync($contentsData);
-
-            
-            foreach ($selectedContentIds as $contentId) {
-                $content = Content::find($contentId);
-                foreach ($selectedParticipantIds as $participantId) {
-                   
-                    $user = User::find($participantId);
-                    $onboarding->contents2()->attach($content, ['participant_id' => $user->id, 'status' =>'not done']);
-                   
+                    $participantStatus = ($onboarding->contents2()->wherePivot('participant_id', $user->id)->wherePivot('status', 'done')->count() == count($selectedContentIds)) ? 'done' : 'in process';
+                    $onboarding->participants()->updateExistingPivot($user, ['status' => $participantStatus]);
                 }
-                $onboarding->contents2()->attach($content, ['participant_id' => auth()->user()->id, 'status' => 'not done']);
             }
+            return redirect()->back();
+        }
+        else {
+            if ($request->hasFile('onboarding_image')) {
+                $imagePath = 'storage/'.$request->onboarding_image;
+                # check whether the image exists in the directory
+                if (File::exists($imagePath)) {
+                    # delete image
+                    File::delete($imagePath);
+                }
+                $profile_image = $request->onboarding_image->store('onboarding_image', 'public');
+                $onboarding->onboarding_image = $profile_image;
+            }
+    
+            
+    
             
             
+            $onboarding->judul = $request->judul;
+            $onboarding->description = $request->description;
+            $onboarding->status = "published";
+            $onboarding->start = $request->start;
+            $onboarding->end = $request->end;
            
+            $onboarding->save();
+            
+            //handle onboarding participant
+            $selectedParticipantIds = $request->input('user_id', []);
+            $participantsData = [];
+               
+                $obParticipants = $onboarding->participants->pluck('id')->toArray();
         
-    return redirect()->route('onboarding.index');
+                
+                $participantsToRemove = array_diff($obParticipants, $selectedParticipantIds);
+        
+               
+                foreach ($participantsToRemove as $participantId) {
+                    $user = User::find($participantId);
+                    $onboarding->participants()->detach($user);
+    
+                }
+        
+                
+                foreach ($selectedParticipantIds as $participantId) {
+                    $user = User::find($participantId);
+                   
+                    $participantsData[$user->id] = ['status' => 'not started'];
+                    
+                }
+                $userloginnow = auth()->user()->id;
+                $onboarding->participants()->sync($participantsData);
+                $onboarding->participants()->attach($userloginnow);
+    
+            //handle onboarding content
+            $selectedContentIds = $request->input('content_id', []);
+            $contentsData = [];
+    
+               
+                $obContents = $onboarding->contents->pluck('id')->toArray();
+        
+                
+                $contentsToRemove = array_diff($obContents, $selectedContentIds);
+        
+               
+                foreach ($contentsToRemove as $contentId) {
+                    $content = Content::find($contentId);
+                    $onboarding->contents()->detach($content);
+                }
+        
+                
+                foreach ($selectedContentIds as $contentId) {
+                    $content = Content::find($contentId);
+                    $contentsData[] = $content->id;
+                    
+                }
+    
+                $onboarding->contents()->sync($contentsData);
+    
+                
+                foreach ($selectedContentIds as $contentId) {
+                    $content = Content::find($contentId);
+                    foreach ($selectedParticipantIds as $participantId) {
+                       
+                        $user = User::find($participantId);
+                        $onboarding->contents2()->attach($content, ['participant_id' => $user->id, 'status' =>'not done']);
+                       
+                    }
+                    $onboarding->contents2()->attach($content, ['participant_id' => auth()->user()->id, 'status' => 'not done']);
+                }
+                
+                
+               
+            
+                return redirect()->back();
+        }
+        
             
     }
 

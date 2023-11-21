@@ -5,7 +5,9 @@ use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\AssignTagController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\ObParticipantContentController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\OnboardingParticipantContentController;
 use App\Http\Controllers\OnboardingParticipantController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -44,9 +46,12 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/search',[GuideController::class, 'search']);
+   
 
     Route::resource('onboarding',OnboardingController::class);
-    Route::resource('ob_participant',OnboardingParticipantController::class);
+    Route::put('/onboarding/{onboarding}/content/{content}', [OnboardingController::class, 'onboardingkerjakan'])->name('onboarding.kerjakan');
+
+    Route::resource('onboarding_progress',ObParticipantContentController::class);
   
 
     // Route::resource('profile',ProfileController::class);
@@ -60,4 +65,4 @@ Route::middleware('auth')->group(function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index']);

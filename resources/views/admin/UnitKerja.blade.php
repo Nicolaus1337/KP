@@ -5,9 +5,7 @@
 @endpush
 @section('content')
 <div class="main-content">
-    <div class="title">
-        Data Unit Kerja
-    </div>
+    
     <div class="content-wrapper">
         <div class="row same-height">
             <div class="col-md-12">

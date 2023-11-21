@@ -6,7 +6,7 @@
 @endpush
 @section('content')
 <div class="main-content">
-<form id="formAction" action="{{ $onboarding->id ?  route('onboarding.update', $onboarding->id) : route('onboarding.store')}}" method="post" enctype="multipart/form-data">
+<form id="formAction" action="{{ route('onboarding.update', $onboarding->id)}}" method="post" enctype="multipart/form-data">
 @csrf
     @if ($onboarding->id)
     @method('put')
@@ -21,12 +21,12 @@
                                     
                                 </div>
                                 
-                                @if($onboarding->status == 'draft')
+                                
                                 
                                 <div class="col-md-4 offset-md-4 text-end">
-                                <button type="submit" class="btn btn-success mb-3 btn-add ">Publish</button>
+                                <button type="submit" class="btn btn-success mb-3 btn-add ">Save</button>
                                 </div>
-                                @endif
+                                
                             </div>
                         </div>
                
@@ -81,41 +81,26 @@
                                                         @elseif ($participant->pivot->status == 'in process')
                                                         <span class="badge bg-warning">{{ $participant->pivot->status }}</span>
                                                         @elseif ($participant->pivot->status == 'done')
-                                                        <span class="badge bg-succes">{{ $participant->pivot->status }}</span>
+                                                        <span class="badge bg-success">{{ $participant->pivot->status }}</span>
                                                         @endif
                                                         
                                                         
                                                     </td>
-                                                    <td>
+                                                    <td  style="padding-top: 12px;">
                                                         <div class="progress" style="width: 100px;">
                                                             @if ($participant->pivot->status == 'not started')
                                                                 <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                             @elseif ($participant->pivot->status == 'in process')
                                                                 <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                             @elseif ($participant->pivot->status == 'done')
-                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                                             @endif
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             
-                                                @else
-                                                @foreach ($users as $user)
-                                                <tr>
-                                                <td>
-                                                    <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}" {{ in_array($user->id, $ob_participants) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    {{ $user->name }}
-                                                    </label>
-
-                                                    </div>
-                                                    
-                                                </td>
-                                                </tr>
-
-                                                @endforeach
+                                               
 
                                             @endif
                                                 
@@ -193,37 +178,21 @@
                                 <div style="
                                             height: 200px;
                                             overflow: auto;">
-                                    <table class="table text-center">
+                                    <table class="table text-center"  id="table-content">
                                             <thead class="table-secondary">
                                                 <tr>
-                                                    <th>Contents</th>
+                                                    <th colspan="2">Contents</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-start"> 
                                                 
                                             @if($onboarding->status == 'published')
-                                            @foreach ($contents as $content)
+                                            @foreach ($onboarding->contents as $content)
                                             <tr>
                                                 <td>
                                                     
-                                                    {{ $content->title }}
-                                                    
-                                                    
-                                                </td>
-                                                </tr>
-
-
-
-
-
-
-                                                @endforeach
-                                                @else
-                                                @foreach ($contents as $content)
-                                                <tr>
-                                                <td>
                                                     <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}" {{ in_array($content->id, $ob_contents) ? 'checked' : '' }}>
+                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}"  {{ in_array($content->id, $contentdone) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                     {{ $content->title }}
                                                     </label>
@@ -231,9 +200,13 @@
                                                     </div>
                                                     
                                                 </td>
-                                                </tr>
+                                                <td class="text-end">
+                                                <button type="button" data-id='{{$content->id}}' data-jenis="view" class="btn btn-primary btn-sm action">View Content</button>
+                                                </td>
+                                            </tr>
 
                                                 @endforeach
+                                                
                                             @endif
                                             </tbody>
                                     </table>
@@ -249,7 +222,17 @@
     </div>
    
     </form>
-   
+    <div class="modal top fade"
+            id="modalAction2"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+            data-mdb-backdrop="true"
+            data-mdb-keyboard="true">
+        <div class="modal-dialog modal-lg" style="min-width:95%;">
+            
+        </div>
+    </div>
 </div>
 @endsection
 @push('js')
@@ -263,10 +246,76 @@
 
 <script src="../vendor/sweetalert2/sweetalert2.all.min.js"></script>
         
+<script>
+    const modal2 = new bootstrap.Modal($('#modalAction2'))
+
+
+    $('#table-content').on('click','.action', function(){
+         let data = $(this).data()
+         let id = data.id
+         let jenis = data.jenis
+
+         if(jenis == 'delete'){
+            Swal.fire({
+                title:"Are you sure?",
+                text:"You won't be able to revert this!",
+                icon:"warning",
+                showCancelButton:!0,
+                confirmButtonColor:"#3085d6",
+                cancelButtonColor:"#d33",
+                confirmButtonText:"Yes, delete it!"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    $.ajax({
+                        method: 'DELETE',
+                        url: `{{ url('guide/') }}/${id}`,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(res){
+                            location.reload();
+                            modal.hide()
+                            Swal.fire(
+                                "Deleted!",
+                                res.message,
+                                res.status
+                                )
+                        }
+                    })
+
+
+                    
+                }
+
+                })
+            return
+        }
+       
+        if(jenis == 'view'){ 
+            $.ajax({
+            method: 'get',
+            url: `{{ url('content/') }}/${id}`,
+            success: function(res){
+                $('#modalAction2').find('.modal-dialog').html(res)
+                modal2.show()
+                
+            }
+         })
+        }
+
+        
+
+         
+     })
+
+</script>
+
+
+
 
 <script>
     
-    $(document).ready(function(){
+$(document).ready(function(){
  
  // image preview
  $("#onboarding_image").change(function(){
@@ -281,15 +330,6 @@
  
 })
     
-            
-
-
-
-   
-
-    
-
-   
 </script>
 
 @endpush

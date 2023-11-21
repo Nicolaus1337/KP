@@ -34,11 +34,7 @@
                 </div>
             </div>
 
-            <label for="visibility" class="form-label">Visibility</label>
-                <select class="form-control" name="visibility" id="visibility">
-                    <option>Public</option>
-                    <option value="{{auth()->user()->unit_kerja}}">Private</option>
-                </select>
+            
                     
             </div>
         </div>
