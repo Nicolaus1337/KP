@@ -10,7 +10,8 @@
                 </a>
             </div> -->
             <div class="sidebar-header">
-                <div class="text">testing</div>
+                
+            <img   style=" object-fit: contain;width: 100%;height: 80px;" src="{{asset('storage/img/logopkt.png')}}" alt="">
                 <div class="close-sidebar action-toggle">
                     <i class="ti-close"></i>
                 </div>
@@ -47,7 +48,7 @@
                     @can('read data unit kerja')
                     <li class="{{request()->segment(1)== 'unit_kerja' ? 'active open' : ''}}">
                         <a href="{{ route('unit_kerja.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-bag"></i>
                                 <span>Unit Kerja</span>
                             </a>
                     </li>
@@ -58,7 +59,7 @@
                     @can('read data user')
                     <li class="{{request()->segment(1)== 'data_user' ? 'active open' : ''}}">
                         <a href="{{ route('data_user.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-user"></i>
                                 <span>Data User</span> 
                             </a>
                     </li>
@@ -67,7 +68,7 @@
                     @can('read role')
                     <li class="{{request()->segment(1)== 'roles' ? 'active open' : ''}}">
                         <a href="{{ route('roles.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-settings"></i>
                                 <span>Role Manager</span> 
                             </a>
                     </li>
@@ -77,7 +78,7 @@
                     @can('read permission')
                     <li class="{{request()->segment(1)== 'permission' ? 'active open' : ''}}">
                         <a href="{{ route('permission.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-settings"></i>
                                 <span>Permission Manager</span> 
                             </a>
                     </li>
@@ -86,7 +87,7 @@
                     @can('read content')
                     <li class="{{request()->segment(1)== 'content' ? 'active open' : ''}}">
                         <a href="{{ route('content.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-palette"></i>
                                 <span>Content Manager</span> 
                             </a>
                     </li>
@@ -95,7 +96,7 @@
                     @can('read guide')
                     <li class="{{request()->segment(1)== 'guide' ? 'active open' : ''}}">
                         <a href="{{ route('guide.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-info-alt"></i>
                                 <span>Guide Manager</span> 
                             </a>
                     </li>
@@ -104,7 +105,7 @@
                     @can('read onboarding')
                     <li class="{{request()->segment(1)== 'onboarding' ? 'active open' : ''}}">
                         <a href="{{ route('onboarding.index') }}" class="link">
-                                <i class="ti-book"></i>
+                                <i class="ti-write"></i>
                                 <span>Onboarding</span> 
                             </a>
                     </li>

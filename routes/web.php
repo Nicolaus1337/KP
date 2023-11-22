@@ -30,11 +30,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::resource('dashboard', RoleController::class);
     Route::resource('roles',RoleController::class);
     Route::resource('unit_kerja',UnitKerjaController::class);
     Route::resource('data_user',UserDataController::class);
@@ -49,17 +50,10 @@ Route::middleware('auth')->group(function () {
    
 
     Route::resource('onboarding',OnboardingController::class);
-    Route::put('/onboarding/{onboarding}/content/{content}', [OnboardingController::class, 'onboardingkerjakan'])->name('onboarding.kerjakan');
 
-    Route::resource('onboarding_progress',ObParticipantContentController::class);
   
 
-    // Route::resource('profile',ProfileController::class);
-
-    // Route::get('/editProfile', [App\Http\Controllers\EditProfileController::class, 'edit'])->name('edit.profile');
-
-    // Route::post('/updateProfile', [App\Http\Controllers\EditProfileController::class, 'update'])->name('update.profile');
-
+  
 });
 
 
