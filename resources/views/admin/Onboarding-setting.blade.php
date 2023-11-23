@@ -5,6 +5,13 @@
 @endpush
 @section('content')
 <div class="main-content">
+
+<div class="modal fade" id="modalAction" tabindex="-1" aria-labelledby="largeModalLabel"
+            aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    
+                </div>
+            </div>
 <form id="formAction" action="{{ $onboarding->id ?  route('onboarding.update', $onboarding->id) : route('onboarding.store')}}" method="post" enctype="multipart/form-data">
 @csrf
     @if ($onboarding->id)
@@ -112,11 +119,21 @@
                                                 @foreach ($onboarding->participants as $participant)
                                                 <tr>
                                                 <td>
-                                                    
-                                                    {{ $participant->name }}
+                                                    <div class="row g-2">
+                                                        <div class="col">
+                                                        {{ $participant->name }}
+                                                        <input type="text" class="form-control" id="user_id[]" name="user_id[]" value="{{$participant->id}}" hidden>
+
+                                                        </div>
+                                                        <div class="col text-end">
+                                                    <button type="button" data-id2='{{$participant->id}}' data-id='{{$onboarding->id}}' data-jenis="delete" class="btn btn-danger btn-sm action"><i class="ti-trash"></i></button>
+                                                        </div>
+                                                    </div>
+                                                   
                                                    
                                                     
                                                 </td>
+                                               
                                                 <tr>
 
                                                 @endforeach
@@ -197,7 +214,7 @@
                                 <div style="
                                             height: 200px;
                                             overflow: auto;">
-                                    <table class="table text-center">
+                                    <table class="table text-center" id="table-content">
                                             <thead class="table-secondary">
                                                 <tr>
                                                     <th>Contents</th>
@@ -223,21 +240,37 @@
 
                                                 @endforeach
                                                 @else
-                                                @foreach ($contents as $content)
+
+                                                <tr class="text-center">
+                                                    <td>
+                                                    <button type="button" data-id='{{$onboarding->id}}' data-jenis="content" class="btn btn-primary btn-sm action">Add Content</button>
+
+                                                    </td>
+                                                </tr>
+                                                @foreach ($onboarding->contents as $content)
                                                 <tr>
                                                 <td>
-                                                    <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    {{ $content->title }}
-                                                    </label>
+                                                    <div class="row g-2">
+                                                        <div class="col">
+                                                        {{ $content->title }}
+                                                        <input type="text" class="form-control" id="content_id[]" name="content_id[]" value="{{$content->id}}" hidden>
 
+                                                        
+
+                                                        </div>
+                                                        <div class="col text-end">
+                                                    <button type="button" data-id2='{{$content->id}}' data-id='{{$onboarding->id}}' data-jenis="delete" class="btn btn-danger btn-sm action"><i class="ti-trash"></i></button>
+                                                        </div>
                                                     </div>
+                                                   
+                                                   
                                                     
                                                 </td>
-                                                </tr>
+                                               
+                                                <tr>
 
                                                 @endforeach
+                                                
                                             @endif
                                             </tbody>
                                     </table>
@@ -256,12 +289,7 @@
     
 </div>
 
-<div class="modal fade" id="modalAction" tabindex="-1" aria-labelledby="largeModalLabel"
-            aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    
-                </div>
-            </div>
+
 @endsection
 @push('js')
 <script src="{{ asset('')}}vendor/jquery/jquery.min.js"></script>
@@ -298,7 +326,8 @@ function store(){
                     processData: false,
                     contentType: false,
                     success: function(res){
-                      
+                        $('#table-participant').load(location.href + ' #table-participant');
+                        $('#table-content').load(location.href + ' #table-content');
                             modal.hide()
                         },
                         error: function(res){
@@ -316,9 +345,10 @@ function store(){
         })
      }
 
-$('#table-participant').on('click','.action', function(){
+ $('#table-participant').on('click','.action', function(){
      let data = $(this).data()
      let id = data.id
+     let id2 = data.id2
      let jenis = data.jenis
 
      
@@ -336,7 +366,59 @@ $('#table-participant').on('click','.action', function(){
      })
     }
 
+
+    if(jenis == 'delete'){ 
+        $.ajax({
+        method: 'DELETE',
+        url: `{{ url('onboarding/${id}/participants/${id2}') }}`,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(res){
+            $('#table-participant').load(location.href + ' #table-participant');
+        }
+     })
+    }
+
     
+
+     
+ })
+
+     
+$('#table-content').on('click','.action', function(){
+     let data = $(this).data()
+     let id = data.id
+     let id2 = data.id2
+     let jenis = data.jenis
+
+     
+  
+    if(jenis == 'content'){ 
+        $.ajax({
+        method: 'get',
+        url: `{{ url('onboarding/') }}/${id}/addcontent`,
+        success: function(res){
+            $('#modalAction').find('.modal-dialog').html(res)
+            modal.show()
+            store()
+        }
+     })
+    }
+
+    if(jenis == 'delete'){ 
+        $.ajax({
+        method: 'DELETE',
+        url: `{{ url('onboarding/${id}/contents/${id2}') }}`,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(res){
+            $('#table-content').load(location.href + ' #table-content');
+        }
+     })
+    }
+  
 
      
  })

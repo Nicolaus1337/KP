@@ -102,6 +102,14 @@ class OnboardingController extends Controller
         return view('admin.Onboarding-ParticipantSetting', compact('onboarding','users','obparticipant'));
     }
 
+    public function addcontent(onboarding $onboarding)
+    {
+        $contents = Content::all();
+        $obcontent = $onboarding->contents->pluck('id')->toArray();
+        
+        return view('admin.Onboarding-ContentSetting', compact('onboarding','contents','obcontent'));
+    }
+
     public function updateparticipant(Request $request,onboarding $onboarding)
     {
          //handle onboarding participant
@@ -129,6 +137,41 @@ class OnboardingController extends Controller
              }
          
              $onboarding->participants()->sync($participantsData);
+
+
+         return response()->json([
+            'status' => 'success',
+            'message' => 'data updated'
+        ]);
+    }
+
+    public function updatecontent(Request $request,onboarding $onboarding)
+    {
+         //handle onboarding content
+         $selectedContentIds = $request->input('content_id', []);
+         $contentsData = [];
+ 
+            
+             $obContents = $onboarding->contents->pluck('id')->toArray();
+     
+             
+             $contentsToRemove = array_diff($obContents, $selectedContentIds);
+     
+            
+             foreach ($contentsToRemove as $contentId) {
+                 $content = Content::find($contentId);
+                 $onboarding->contents()->detach($content);
+             }
+     
+             
+             foreach ($selectedContentIds as $contentId) {
+                 $content = Content::find($contentId);
+                 $contentsData[] = $content->id;
+                 
+             }
+ 
+             $onboarding->contents()->sync($contentsData);
+ 
 
 
          return response()->json([
@@ -198,57 +241,14 @@ class OnboardingController extends Controller
            
             $onboarding->save();
             
-            //handle onboarding participant
+          
             $selectedParticipantIds = $request->input('user_id', []);
-            $participantsData = [];
-               
-                $obParticipants = $onboarding->participants->pluck('id')->toArray();
-        
-                
-                $participantsToRemove = array_diff($obParticipants, $selectedParticipantIds);
-        
-               
-                foreach ($participantsToRemove as $participantId) {
-                    $user = User::find($participantId);
-                    $onboarding->participants()->detach($user);
-    
-                }
-        
-                
-                foreach ($selectedParticipantIds as $participantId) {
-                    $user = User::find($participantId);
-                   
-                    $participantsData[$user->id] = ['status' => 'not started'];
-                    
-                }
-               
-                $onboarding->participants()->sync($participantsData);
+            
                 
     
-            //handle onboarding content
+            
             $selectedContentIds = $request->input('content_id', []);
-            $contentsData = [];
-    
-               
-                $obContents = $onboarding->contents->pluck('id')->toArray();
-        
-                
-                $contentsToRemove = array_diff($obContents, $selectedContentIds);
-        
-               
-                foreach ($contentsToRemove as $contentId) {
-                    $content = Content::find($contentId);
-                    $onboarding->contents()->detach($content);
-                }
-        
-                
-                foreach ($selectedContentIds as $contentId) {
-                    $content = Content::find($contentId);
-                    $contentsData[] = $content->id;
-                    
-                }
-    
-                $onboarding->contents()->sync($contentsData);
+           
     
                 
                 foreach ($selectedContentIds as $contentId) {
@@ -276,5 +276,15 @@ class OnboardingController extends Controller
     public function destroy(onboarding $onboarding)
     {
         //
+    }
+
+    public function deleteparticipant(onboarding $onboarding, User $userid)
+    {
+        $onboarding->participants()->detach($userid);
+    }
+
+    public function deletecontent(onboarding $onboarding, Content $contentid)
+    {
+        $onboarding->contents()->detach($contentid);
     }
 }

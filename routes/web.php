@@ -52,8 +52,16 @@ Route::middleware('auth')->group(function () {
    
 
     Route::resource('onboarding',OnboardingController::class);
+
     Route::get('onboarding/{onboarding}/addparticipant', [OnboardingController::class, 'addparticipant'])->name('onboarding.addparticipant');
-    Route::put('onboarding/{onboarding}/edit', [OnboardingController::class, 'updateparticipant'])->name('onboarding.updateparticipant');
+    Route::put('onboarding/{onboarding}/editparticipant', [OnboardingController::class, 'updateparticipant'])->name('onboarding.updateparticipant');
+    Route::delete('onboarding/{onboarding}/participants/{userid}', [OnboardingController::class, 'deleteparticipant'])->name('onboarding.deleteparticipant');
+
+    Route::get('onboarding/{onboarding}/addcontent', [OnboardingController::class, 'addcontent'])->name('onboarding.addcontent');
+    Route::put('onboarding/{onboarding}/editcontent', [OnboardingController::class, 'updatecontent'])->name('onboarding.updatecontent');
+    Route::delete('onboarding/{onboarding}/contents/{contentid}', [OnboardingController::class, 'deletecontent'])->name('onboarding.deletecontent');
+
+
     Route::resource('onboarding_user',OnboardingUserController::class);
     Route::resource('assignparticipant',AssignParticipant::class);
   
