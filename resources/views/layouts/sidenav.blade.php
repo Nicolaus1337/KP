@@ -97,7 +97,7 @@
                     <li class="{{request()->segment(1)== 'guide' ? 'active open' : ''}}">
                         <a href="{{ route('guide.index') }}" class="link">
                                 <i class="ti-info-alt"></i>
-                                <span>Guide Manager</span> 
+                                <span>Guide & Information</span> 
                             </a>
                     </li>
                     @endcan
@@ -105,6 +105,15 @@
                     @can('read onboarding')
                     <li class="{{request()->segment(1)== 'onboarding' ? 'active open' : ''}}">
                         <a href="{{ route('onboarding.index') }}" class="link">
+                                <i class="ti-write"></i>
+                                <span>Onboarding</span> 
+                            </a>
+                    </li>
+                    @endcan
+
+                    @can('read onboarding user')
+                    <li class="{{request()->segment(1)== 'onboarding_user' ? 'active open' : ''}}">
+                        <a href="{{ route('onboarding_user.index') }}" class="link">
                                 <i class="ti-write"></i>
                                 <span>Onboarding</span> 
                             </a>

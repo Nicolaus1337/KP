@@ -16,7 +16,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     
-                                <a href="{{route('onboarding_user.index')}}"><button type="button" class="btn btn-primary mb-3 btn-add ">Kembali</button></a>
+                                <a href="{{route('onboarding.index')}}"><button type="button" class="btn btn-primary mb-3 btn-add ">Kembali</button></a>
 
                                     
                                 </div>
@@ -48,6 +48,64 @@
                                     
                                 </div>
                                
+                                
+
+                                <div style="
+                                        height: 200px;
+                                        overflow: auto;">
+                                    <table class="table text-center">
+                                            <thead class="table-secondary">
+                                                <tr>
+                                                    <th colspan="3">Partisipan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-start"> 
+                                                
+                                            @if($onboarding->status == 'published')
+                                                @foreach ($onboarding->participants as $participant)
+                                                <tr>
+                                                    <td>
+                                                        {{ $participant->name }}
+                                                    </td>
+                                                    <td style="padding-left: 35px;">
+                                                        @if ($participant->pivot->status == 'not started')
+                                                        <span class="badge bg-secondary">{{ $participant->pivot->status }}</span>
+                                                        @elseif ($participant->pivot->status == 'in process')
+                                                        <span class="badge bg-warning">{{ $participant->pivot->status }}</span>
+                                                        @elseif ($participant->pivot->status == 'done')
+                                                        <span class="badge bg-success">{{ $participant->pivot->status }}</span>
+                                                        @endif
+                                                        
+                                                        
+                                                    </td>
+                                                    <td  style="padding-top: 12px;">
+                                                        <div class="progress" style="width: 100px;">
+                                                            @if ($participant->pivot->status == 'not started')
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            @elseif ($participant->pivot->status == 'in process')
+                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            @elseif ($participant->pivot->status == 'done')
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            
+                                               
+
+                                            @endif
+                                                
+
+                                            </tbody>
+                                    </table>
+                                </div>
+
+                                
+
+                                </div>
+                                <div class="col-6">
+                                
                                 @if($onboarding->status == 'published')
                                 <div class="col-md-15">
                                     <div class="mb-2">
@@ -109,65 +167,6 @@
                                 </div>
 
                                 @endif
-
-                                
-
-                                
-
-                                </div>
-                                <div class="col-6">
-                                
-                                <div style="
-                                        height: 200px;
-                                        overflow: auto;">
-                                    <table class="table text-center">
-                                            <thead class="table-secondary">
-                                                <tr>
-                                                    <th colspan="3">Partisipan</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-start"> 
-                                                
-                                            @if($onboarding->status == 'published')
-                                                @foreach ($onboarding->participants as $participant)
-                                                <tr>
-                                                    <td>
-                                                        {{ $participant->name }}
-                                                    </td>
-                                                    <td style="padding-left: 35px;">
-                                                        @if ($participant->pivot->status == 'not started')
-                                                        <span class="badge bg-secondary">{{ $participant->pivot->status }}</span>
-                                                        @elseif ($participant->pivot->status == 'in process')
-                                                        <span class="badge bg-warning">{{ $participant->pivot->status }}</span>
-                                                        @elseif ($participant->pivot->status == 'done')
-                                                        <span class="badge bg-success">{{ $participant->pivot->status }}</span>
-                                                        @endif
-                                                        
-                                                        
-                                                    </td>
-                                                    <td  style="padding-top: 12px;">
-                                                        <div class="progress" style="width: 100px;">
-                                                            @if ($participant->pivot->status == 'not started')
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            @elseif ($participant->pivot->status == 'in process')
-                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            @elseif ($participant->pivot->status == 'done')
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            
-                                               
-
-                                            @endif
-                                                
-
-                                            </tbody>
-                                    </table>
-                                </div>
-                                
                                 <div style="
                                             height: 200px;
                                             overflow: auto;">

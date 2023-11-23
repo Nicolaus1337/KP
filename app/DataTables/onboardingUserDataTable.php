@@ -14,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class onboardingDataTable extends DataTable
+class onboardingUserDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -29,12 +29,11 @@ class onboardingDataTable extends DataTable
             ->addColumn('action', function($row){
                 $action =' ';
                 
-                if(Gate::allows('update onboarding')){
-                    $editUrl = route('onboarding.edit', $row->id);
-
-                    $action = "<a href='$editUrl' class='btn btn-success btn-sm action btn-setting'>Setting</a>";
-                }
                
+                if(Gate::allows('read onboarding user')){
+                    $editUrl = route('onboarding.show', $row->id);
+                    $action = "<a href='$editUrl' class='btn btn-primary btn-sm action btn-kerjakan'>Kerjakan</a>";
+                }
                
                 
                     return $action;
@@ -46,7 +45,12 @@ class onboardingDataTable extends DataTable
      */
     public function query(onboarding $model): QueryBuilder
     {
-        return $model->newQuery();
+        $loggedInUserId = Auth::id();
+
+        return $model->newQuery()
+        ->whereHas('participants', function ($query) use ($loggedInUserId) {
+            $query->where('user_id', $loggedInUserId);
+        });
     }
 
     /**

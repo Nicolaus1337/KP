@@ -175,6 +175,9 @@ class UserRolePermissionSeeder extends Seeder
             'name' => "read onboarding"
         ]);
         $permission = Permission::create([
+            'name' => "read onboarding user"
+        ]);
+        $permission = Permission::create([
             'name' => "update onboarding"
         ]);
         $permission = Permission::create([
@@ -291,7 +294,7 @@ class UserRolePermissionSeeder extends Seeder
            
             'home',
             "read guide",
-            "read onboarding"
+            "read onboarding user"
         ]);
     }
 }

@@ -2,7 +2,6 @@
 @push('css')
 <link href="{{ asset ('')}}vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 <link href="{{ asset ('')}}vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 @endpush
 @section('content')
 <div class="main-content">
@@ -59,9 +58,9 @@
                                 
 
                                 <div style="
-  height: 200px;
-  overflow: auto;">
-                                    <table class="table text-center">
+                                                        height: 200px;
+                                                        overflow: auto;">
+                                    <table class="table text-center "id="table-participant">
                                             <thead class="table-secondary">
                                                 <tr>
                                                     <th colspan="3">Partisipan</th>
@@ -101,22 +100,27 @@
                                                 @endforeach
                                             
                                                 @else
-                                                @foreach ($users as $user)
+                                                
+
+
+                                                <tr class="text-center">
+                                                    <td>
+                                                    <button type="button" data-id='{{$onboarding->id}}' data-jenis="participant" class="btn btn-primary btn-sm action">Add Participant</button>
+
+                                                    </td>
+                                                </tr>
+                                                @foreach ($onboarding->participants as $participant)
                                                 <tr>
                                                 <td>
-                                                    <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                    {{ $user->name }}
-                                                    </label>
-
-                                                    </div>
+                                                    
+                                                    {{ $participant->name }}
+                                                   
                                                     
                                                 </td>
-                                                </tr>
+                                                <tr>
 
                                                 @endforeach
-
+                                                
                                             @endif
                                                 
 
@@ -249,23 +253,99 @@
     </div>
    
     </form>
-   
+    
 </div>
+
+<div class="modal fade" id="modalAction" tabindex="-1" aria-labelledby="largeModalLabel"
+            aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    
+                </div>
+            </div>
 @endsection
 @push('js')
 <script src="{{ asset('')}}vendor/jquery/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 <script src="{{ asset('')}}vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('')}}vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
 <script src="{{ asset('')}}vendor/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="{{ asset('')}}vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
-
-
 <script src="../vendor/sweetalert2/sweetalert2.all.min.js"></script>
         
+<script>
+    const modal = new bootstrap.Modal($('#modalAction'))
+   
+
+
+
+
+
+function store(){
+        $('#formAction').on('submit',function(e){
+            e.preventDefault()
+            const _form = this
+            const formData = new FormData(_form)
+
+            const url = this.getAttribute('action')
+
+            $.ajax({
+                    method: 'POST',
+                    url,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res){
+                      
+                            modal.hide()
+                        },
+                        error: function(res){
+                        let errors = res.responseJSON?.errors
+
+                        $(_form).find('.text-danger.text-small').remove()
+                        if(errors){
+                            for(const [key,value] of Object.entries(errors)){
+                                $(`[name='${key}']`).parent().append(`<span class="text-danger text-small">${value}</span>`)
+                            }
+                        }
+                        console.log(errors);
+                    }
+                    })
+        })
+     }
+
+$('#table-participant').on('click','.action', function(){
+     let data = $(this).data()
+     let id = data.id
+     let jenis = data.jenis
+
+     
+  
+
+    if(jenis == 'participant'){ 
+        $.ajax({
+        method: 'get',
+        url: `{{ url('onboarding/') }}/${id}/addparticipant`,
+        success: function(res){
+            $('#modalAction').find('.modal-dialog').html(res)
+            modal.show()
+            store()
+        }
+     })
+    }
+
+    
+
+     
+ })
+    
+</script>
 
 <script>
-    
+   
+
     $(document).ready(function(){
  
  // image preview
@@ -280,13 +360,6 @@
 
  
 })
-    
-            
-
-
-
-   
-
     
 
    

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\onboardingDataTable;
+use App\DataTables\onboardingUserDataTable;
 use App\Models\onboarding;
 use App\Http\Requests\StoreonboardingRequest;
 use App\Http\Requests\UpdateonboardingRequest;
@@ -16,15 +17,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 
-class OnboardingController extends Controller
+class OnboardingUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(onboardingDataTable  $dataTable)
+    public function index(onboardingUserDataTable  $dataTable)
     {
-        $this->authorize('read onboarding');
-        return $dataTable->render('admin.Onboarding');
+        $this->authorize('read onboarding user');
+        return $dataTable->render('admin.OnboardingUser');
     }
 
     /**
@@ -79,7 +80,7 @@ class OnboardingController extends Controller
         ->pluck('content_id')
         ->toArray();
 
-        return view('admin.Onboarding-kerjakan', compact('onboarding', 'contentdone'));
+        return dd( $onboarding);
     }
 
     /**
@@ -87,57 +88,10 @@ class OnboardingController extends Controller
      */
     public function edit(onboarding $onboarding)
     {
-        $this->authorize('update onboarding');
-        $users = User::all();
-        $contents = Content::all();
-        
-        return view('admin.Onboarding-setting', compact('onboarding','users','contents'));
-    }
-
-    public function addparticipant(onboarding $onboarding)
-    {
         $users = User::all();
         $obparticipant = $onboarding->participants->pluck('id')->toArray();
-        
         return view('admin.Onboarding-ParticipantSetting', compact('onboarding','users','obparticipant'));
     }
-
-    public function updateparticipant(Request $request,onboarding $onboarding)
-    {
-         //handle onboarding participant
-         $selectedParticipantIds = $request->input('user_id', []);
-         $participantsData = [];
-         
-             $obParticipants = $onboarding->participants->pluck('id')->toArray();
- 
-             
-             $participantsToRemove = array_diff($obParticipants, $selectedParticipantIds);
- 
-         
-             foreach ($participantsToRemove as $participantId) {
-                 $user = User::find($participantId);
-                 $onboarding->participants()->detach($user);
- 
-             }
- 
-             
-             foreach ($selectedParticipantIds as $participantId) {
-                 $user = User::find($participantId);
-             
-                 $participantsData[$user->id] = ['status' => 'not started'];
-                 
-             }
-         
-             $onboarding->participants()->sync($participantsData);
-
-
-         return response()->json([
-            'status' => 'success',
-            'message' => 'data updated'
-        ]);
-    }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -221,9 +175,9 @@ class OnboardingController extends Controller
                     $participantsData[$user->id] = ['status' => 'not started'];
                     
                 }
-               
+                $userloginnow = auth()->user()->id;
                 $onboarding->participants()->sync($participantsData);
-                
+                $onboarding->participants()->attach($userloginnow);
     
             //handle onboarding content
             $selectedContentIds = $request->input('content_id', []);
@@ -259,6 +213,7 @@ class OnboardingController extends Controller
                         $onboarding->contents2()->attach($content, ['participant_id' => $user->id, 'status' =>'not done']);
                        
                     }
+                    $onboarding->contents2()->attach($content, ['participant_id' => auth()->user()->id, 'status' => 'not done']);
                 }
                 
                 

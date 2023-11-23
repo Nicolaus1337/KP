@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignParticipant;
 use App\Http\Controllers\AssignPermissionController;
 use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\AssignTagController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ObParticipantContentController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\OnboardingParticipantContentController;
 use App\Http\Controllers\OnboardingParticipantController;
+use App\Http\Controllers\OnboardingUserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -50,7 +52,10 @@ Route::middleware('auth')->group(function () {
    
 
     Route::resource('onboarding',OnboardingController::class);
-
+    Route::get('onboarding/{onboarding}/addparticipant', [OnboardingController::class, 'addparticipant'])->name('onboarding.addparticipant');
+    Route::put('onboarding/{onboarding}/edit', [OnboardingController::class, 'updateparticipant'])->name('onboarding.updateparticipant');
+    Route::resource('onboarding_user',OnboardingUserController::class);
+    Route::resource('assignparticipant',AssignParticipant::class);
   
 
   

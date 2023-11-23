@@ -140,19 +140,15 @@ body{
             <div class="col-md-5">
             <h1 class="text-center">Login</h1>
             <div class="input-box">
-                <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input id="npk" placeholder="Npk" type="text" class="@error('npk') is-invalid @enderror" name="npk" value="{{ old('npk') }}" required autocomplete="npk" autofocus>
                 <i class='bx bxs-user'></i>
-                @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                
             </div>
             <div class="input-box">
-                <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                <input id="password" placeholder="Password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 <i class='bx bxs-lock-alt' ></i>
-                @error('password')
-                    <span class="invalid-feedback" role="alert">
+                @error('email')
+                    <span class="" role="">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
