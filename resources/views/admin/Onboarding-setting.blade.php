@@ -46,7 +46,7 @@
                      
                     
                         <div class="container-md text-center">
-                        <div class="row g-2">
+                        <div class="row g-5">
                                 <div class="col-6">
                                 <div class="d-flex flex-column align-items-center text-center p-3 py-4">
                                    
@@ -70,7 +70,7 @@
                                     <table class="table text-center "id="table-participant">
                                             <thead class="table-secondary">
                                                 <tr>
-                                                    <th colspan="3">Partisipan</th>
+                                                    <th colspan="3">Participants</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-start"> 

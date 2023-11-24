@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Content;
+use App\Models\onboarding;
 use App\Models\onboarding_content;
 use Illuminate\Http\Request;
 
@@ -34,9 +36,13 @@ class OnboardingContentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(onboarding_content $onboarding_content)
+    public function show(onboarding $onboarding)
     {
-        //
+   
+            $contents =  $onboarding->contents()->get();
+            
+            return dd($contents);
+      
     }
 
     /**

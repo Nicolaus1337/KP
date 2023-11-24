@@ -79,7 +79,43 @@ class OnboardingController extends Controller
         ->pluck('content_id')
         ->toArray();
 
+        
+
         return view('admin.Onboarding-kerjakan', compact('onboarding', 'contentdone'));
+    }
+
+    public function showcontent(onboarding $onboarding, Content $contents)
+    {
+   
+        if($onboarding->status == 'published'){
+            $content = $onboarding->contents2->find($contents->id);
+
+            $user = auth()->user();
+    
+            if ($onboarding->participants->contains($user)) {
+                
+                    $onboarding->contents2()
+                        ->wherePivot('participant_id', $user->id)
+                        ->wherePivot('content_id', $content->id)
+                        ->update(['status' => 'done']);
+            
+                    $totalContentCount = $onboarding->contents2()
+                        ->wherePivot('participant_id', $user->id)
+                        ->count();
+            
+                    $doneContentCount = $onboarding->contents2()
+                        ->wherePivot('participant_id', $user->id)
+                        ->wherePivot('status', 'done')
+                        ->count();
+            
+                    $participantStatus = ($doneContentCount == $totalContentCount) ? 'done' : (($doneContentCount > 0) ? 'in process' : 'not started');
+                    $onboarding->participants()->updateExistingPivot($user, ['status' => $participantStatus]);
+                
+            }
+            return view('admin.Onboarding-ContentView', compact('onboarding', 'content'));
+        }
+        
+      
     }
 
     /**
@@ -188,36 +224,7 @@ class OnboardingController extends Controller
     public function update(Request $request , onboarding $onboarding)
     {
 
-        if($onboarding->status == 'published'){
-            $selectedContentIds = $request->input('content_id', []);
-
-            $user = auth()->user();
-    
-            if ($onboarding->participants->contains($user)) {
-                foreach ($selectedContentIds as $contentId) {
-                    $content = Content::find($contentId);
-                    
-                    $onboarding->contents2()
-                        ->wherePivot('participant_id', $user->id)
-                        ->wherePivot('content_id', $content->id)
-                        ->update(['status' => 'done']);
-            
-                    $totalContentCount = $onboarding->contents2()
-                        ->wherePivot('participant_id', $user->id)
-                        ->count();
-            
-                    $doneContentCount = $onboarding->contents2()
-                        ->wherePivot('participant_id', $user->id)
-                        ->wherePivot('status', 'done')
-                        ->count();
-            
-                    $participantStatus = ($doneContentCount == $totalContentCount) ? 'done' : (($doneContentCount > 0) ? 'in process' : 'not started');
-                    $onboarding->participants()->updateExistingPivot($user, ['status' => $participantStatus]);
-                }
-            }
-            return redirect()->back();
-        }
-        else {
+        if($onboarding->status == 'draft'){
             if ($request->hasFile('onboarding_image')) {
                 $imagePath = 'storage/'.$request->onboarding_image;
                 # check whether the image exists in the directory
@@ -265,7 +272,11 @@ class OnboardingController extends Controller
                
             
                 return redirect()->back();
+            
         }
+        
+            
+        
         
             
     }

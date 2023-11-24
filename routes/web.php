@@ -7,6 +7,7 @@ use App\Http\Controllers\AssignTagController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\ObParticipantContentController;
+use App\Http\Controllers\OnboardingContentController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\OnboardingParticipantContentController;
 use App\Http\Controllers\OnboardingParticipantController;
@@ -64,7 +65,10 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('onboarding_user',OnboardingUserController::class);
     Route::resource('assignparticipant',AssignParticipant::class);
-  
+    
+    
+    Route::get('onboarding/{onboarding}/contentsview/{contents}', [OnboardingController::class, 'showcontent'])->name('onboarding.showcontent');
+
 
   
 });

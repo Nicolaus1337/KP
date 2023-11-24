@@ -11,7 +11,7 @@
             </div> -->
             <div class="sidebar-header">
                 
-            <img   style=" object-fit: contain;width: 100%;height: 80px;" src="{{asset('storage/img/logopkt.png')}}" alt="">
+            <img   style=" object-fit: contain;width: 100%;height: 80px;" src="{{asset('upload/img/logopkt.png')}}" alt="">
                 <div class="close-sidebar action-toggle">
                     <i class="ti-close"></i>
                 </div>

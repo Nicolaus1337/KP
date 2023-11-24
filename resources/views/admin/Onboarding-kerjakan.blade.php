@@ -6,11 +6,7 @@
 @endpush
 @section('content')
 <div class="main-content">
-<form id="formAction" action="{{ route('onboarding.update', $onboarding->id)}}" method="post" enctype="multipart/form-data">
-@csrf
-    @if ($onboarding->id)
-    @method('put')
-    @endif
+
 
                 <div class="container">
                             <div class="row">
@@ -23,9 +19,7 @@
                                 
                                 
                                 
-                                <div class="col-md-4 offset-md-4 text-end">
-                                <button type="submit" class="btn btn-success mb-3 btn-add ">Save</button>
-                                </div>
+                               
                                 
                             </div>
                         </div>
@@ -39,8 +33,8 @@
                     <div class="card-body">
                      
                     
-                        <div class="container-md text-center">
-                        <div class="row g-2">
+                        <div class="container-md text-start">
+                        <div class="row g-5">
                                 <div class="col-6">
                                 <div class="d-flex flex-column align-items-center text-center p-3 py-4">
                                    
@@ -123,13 +117,14 @@
                                     <table class="table text-center">
                                             <thead class="table-secondary">
                                                 <tr>
-                                                    <th colspan="3">Partisipan</th>
+                                                    <th colspan="3">Other Participants</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-start"> 
                                                 
                                             @if($onboarding->status == 'published')
                                                 @foreach ($onboarding->participants as $participant)
+                                                @if($participant->id != auth()->user()->id)
                                                 <tr>
                                                     <td>
                                                         {{ $participant->name }}
@@ -148,16 +143,25 @@
                                                     <td  style="padding-top: 12px;">
                                                         <div class="progress" style="width: 100px;">
                                                             @if ($participant->pivot->status == 'not started')
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="progress-label">0%</span>    
+                                                                </div>
                                                             @elseif ($participant->pivot->status == 'in process')
-                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="progress-label">50%</span>    
+                                                                </div>
                                                             @elseif ($participant->pivot->status == 'done')
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="progress-label">100%</span>    
+                                                                </div>
                                                             @endif
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                @endif
                                                 @endforeach
+
+
                                             
                                                
 
@@ -166,6 +170,30 @@
 
                                             </tbody>
                                     </table>
+                                </div>
+
+                                <div style="padding-bottom: 20px;">
+                                    <p>Your Progress, {{ auth()->user()->name}} !</p>
+                                   
+                                    @foreach ($onboarding->participants as $participant)
+                                    @if($participant->id == auth()->user()->id)
+                                    <div class="progress" style="width: 100%;height:30px;">
+                                        @if ($participant->pivot->status == 'not started')
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="progress-label">0%</span>    
+                                            </div>
+                                        @elseif ($participant->pivot->status == 'in process')
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="progress-label">50%</span>    
+                                            </div>
+                                        @elseif ($participant->pivot->status == 'done')
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="progress-label">100%</span>    
+                                            </div>
+                                        @endif
+                                    </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                                 
                                 <div style="
@@ -185,7 +213,7 @@
                                                 <td>
                                                     
                                                     <div  class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}"  {{ in_array($content->id, $contentdone) ? 'checked' : '' }}>
+                                                    <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}"  {{ in_array($content->id, $contentdone) ? 'checked' : '' }} disabled>
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                     {{ $content->title }}
                                                     </label>
@@ -194,7 +222,7 @@
                                                     
                                                 </td>
                                                 <td class="text-end">
-                                                <button type="button" data-id='{{$content->id}}' data-jenis="view" class="btn btn-primary btn-sm action">View Content</button>
+                                                <button type="button" data-id2='{{$content->id}}' data-id='{{$onboarding->id}}' data-jenis="view" class="btn btn-primary btn-sm action">View Content</button>
                                                 </td>
                                             </tr>
 
@@ -214,7 +242,7 @@
         </div>
     </div>
    
-    </form>
+    
     <div class="modal top fade"
             id="modalAction2"
             tabindex="-1"
@@ -246,6 +274,7 @@
     $('#table-content').on('click','.action', function(){
          let data = $(this).data()
          let id = data.id
+         let id2 = data.id2
          let jenis = data.jenis
 
          if(jenis == 'delete'){
@@ -287,10 +316,11 @@
         if(jenis == 'view'){ 
             $.ajax({
             method: 'get',
-            url: `{{ url('content/') }}/${id}`,
+            url: `{{ url('onboarding/${id}/contentsview/${id2}') }}`,
             success: function(res){
-                $('#modalAction2').find('.modal-dialog').html(res)
-                modal2.show()
+                window.location.href = `{{ url('onboarding/${id}/contentsview/${id2}') }}` ;
+
+
                 
             }
          })

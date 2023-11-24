@@ -45,13 +45,22 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('/storage/img/pkt.png');
+    background: url('/upload/img/pkt.png');
     background-size: cover;
     background-position: center;
 }
 
+body h1{
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    
+}
+
 .wrapper{
-    width: 800px;
+    width: 400px;
     background: rgba(0, 0, 255, 0.3); 
     
     border: 2px solid rgba(255, 255, 255, .2);
@@ -60,6 +69,7 @@ body{
     color: #fff;
     border-radius: 10px;
     padding: 30px 40px;
+    margin: auto;
 
 }
 
@@ -132,22 +142,30 @@ body{
     <div id="app">
         <div class="shadow-header"></div>
         
-                                
+       
+        <img style="width: 500px;" src="{{asset('upload/img/logodasar.png')}}">
+
+        
+        <h1>Onboarding Karyawan Baru</h1>      
+                
+                        
         <div class="wrapper">
+            
         <form method="POST" action="{{ route('login') }}">
         @csrf
-        <div class="row g-2"> 
-            <div class="col-md-5">
+        
+            
             <h1 class="text-center">Login</h1>
             <div class="input-box">
                 <input id="npk" placeholder="Npk" type="text" class="@error('npk') is-invalid @enderror" name="npk" value="{{ old('npk') }}" required autocomplete="npk" autofocus>
                 <i class='bx bxs-user'></i>
                 
+                
             </div>
             <div class="input-box">
                 <input id="password" placeholder="Password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 <i class='bx bxs-lock-alt' ></i>
-                @error('email')
+                @error('npk')
                     <span class="" role="">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -155,20 +173,14 @@ body{
             </div>
 
             <button type="submit" class="btn">Login</button>
-            </div>
+           
             
-            <div class="col-md-7 text-end">
-                <div class="onboarding">
-                    <h1 class="">Onboarding</h1>
-                    <h1 class="">Karyawan Baru</h1>
-                </div>
-            <img  style=" object-fit: contain;width: 80%;height: 200px;" src="{{asset('storage/onboarding_image/logodasar.png')}}">
-            </div>
+            
 
 
 
 
-        </div>
+       
         </form>
         </div>
 

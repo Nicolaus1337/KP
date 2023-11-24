@@ -178,7 +178,7 @@
     })
 </script>
        
-        <script>
+<script>
     const modal = new bootstrap.Modal($('#modalAction'))
     const modal2 = new bootstrap.Modal($('#modalAction2'))
     const modal3 = new bootstrap.Modal($('#modalAction3'))
@@ -287,8 +287,8 @@
             method: 'get',
             url: `{{ url('content/') }}/${id}`,
             success: function(res){
-                $('#modalAction2').find('.modal-dialog').html(res)
-                modal2.show()
+                window.location.href = "{{ url('content') }}/" + id ;
+
                 
             }
          })
@@ -299,63 +299,7 @@
          
      })
 
-     $('#Content').on('click','.action', function(){
-         let data = $(this).data()
-         let id = data.id
-         let jenis = data.jenis
-
-         if(jenis == 'delete'){
-            Swal.fire({
-                title:"Are you sure?",
-                text:"You won't be able to revert this!",
-                icon:"warning",
-                showCancelButton:!0,
-                confirmButtonColor:"#3085d6",
-                cancelButtonColor:"#d33",
-                confirmButtonText:"Yes, delete it!"
-            }).then((result)=>{
-                if(result.isConfirmed){
-                    $.ajax({
-                        method: 'DELETE',
-                        url: `{{ url('guide/') }}/${id}`,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(res){
-                            location.reload();
-                            modal.hide()
-                            Swal.fire(
-                                "Deleted!",
-                                res.message,
-                                res.status
-                                )
-                        }
-                    })
-
-
-                    
-                }
-
-                })
-            return
-        }
-       
-        if(jenis == 'view'){ 
-            $.ajax({
-            method: 'get',
-            url: `{{ url('content/') }}/${id}`,
-            success: function(res){
-                $('#modalAction2').find('.modal-dialog').html(res)
-                modal2.show()
-                
-            }
-         })
-        }
-
-        
-
-         
-     })
+    
 </script>
 
 

@@ -7,7 +7,7 @@
 }
 
 .card-2{
-    background-color: #027afe;
+    background-color: #025CBF;
     color: #fff;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .card-4{
-    background-color: #025CBF;
+    background-color: #027afe;
     color: #fff;
 }
 
@@ -43,7 +43,7 @@
            
         </div>
         <div class="row same-height">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card"  >
                     <div class="card-header">
                         <p>Selamat bergabung di Departemen IT Service & Business Partner PKT (Dept. TI)</p>
@@ -54,81 +54,82 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card card-1" >
-                    <div class="card-header">
-                        <div class="row">
-                        <div class="col-md-6">
-                        <h1>{{$totaluser}}</h1>
-                        </div>
-                        <div class="col-md-6 text-end">
-                        <i class="ti-user" style="font-size: 50px"></i>
-                        </div>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                       <h2>Total User</h2>
-                    </div>
-                </div>
-            </div>
+            
            
         </div>
 
-        <div class="row same-height">
-            <div class="col-md-4">
-                <div class="card card-2" >
-                    <div class="card-header">
-                       <div class="row">
-                        <div class="col-md-6">
-                        <h1>{{$totalunitkerja}}</h1>
-                        </div>
-                        <div class="col-md-6 text-end">
-                        <i class="ti-bag" style="font-size: 50px"></i>
-                        </div>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                    <h2>Total Unit Kerja</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card card-3" >
-                    <div class="card-header">
+        <div class="row">
+        <div class="col-md-3">
+                <div class="card card-1" >
+                <div class="card-header">
                         <div class="row">
                         <div class="col-md-6">
-                        <h1>{{$totalcontent}}</h1>
+                        <h2>{{$totalonboarding}}</h2>
                         </div>
                         <div class="col-md-6 text-end">
-                        <i class="ti-palette" style="font-size: 50px"></i>
+                        <i class="ti-write" style="font-size: 32px"></i>
                         </div>
 
                         </div>
                     </div>
                     <div class="card-body">
-                    <h2>Total Content</h2>
+                    <h5>Total Onboarding</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-2" >
+                <div class="card-header">
+                        <div class="row">
+                        <div class="col-md-6">
+                        <h2>{{$totaluser}}</h2>
+                        </div>
+                        <div class="col-md-6 text-end">
+                        <i class="ti-user" style="font-size: 32px"></i>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                       <h5 >Total User</h5>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="card card-3" >
+                <div class="card-header">
+                       <div class="row">
+                        <div class="col-md-6">
+                        <h2>{{$totalunitkerja}}</h2>
+                        </div>
+                        <div class="col-md-6 text-end">
+                        <i class="ti-bag" style="font-size: 32px"></i>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <h5  >Total Unit Kerja</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
                 <div class="card card-4" >
                     <div class="card-header">
                         <div class="row">
                         <div class="col-md-6">
-                        <h1>{{$totalguide}}</h1>
+                        <h2>{{$totalguide}}</h2>
                         </div>
                         <div class="col-md-6 text-end">
-                        <i class="ti-info-alt" style="font-size: 50px"></i>
+                        <i class="ti-info-alt" style="font-size: 32px"></i>
                         </div>
 
                         </div>
                     </div>
                     <div class="card-body">
-                    <h2>Total Guide</h2>
+                    <h5>Total Guide</h5>
                     </div>
                 </div>
             </div>

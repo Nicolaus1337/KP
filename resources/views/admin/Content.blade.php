@@ -235,8 +235,8 @@
             method: 'get',
             url: `{{ url('content/') }}/${id}`,
             success: function(res){
-                $('#modalAction2').find('.modal-dialog').html(res)
-                modal2.show()
+                window.location.href = "{{ url('content') }}/" + id ;
+
                 
             }
          })
