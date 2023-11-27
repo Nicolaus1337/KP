@@ -61,7 +61,7 @@ body h1{
 
 .wrapper{
     width: 400px;
-    background: rgba(0, 0, 255, 0.3); 
+    background: rgba(0, 0, 255, 0.5); 
     
     border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(3px);

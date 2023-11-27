@@ -69,6 +69,33 @@
             success: function(res){
                 $('#modalAction').find('.modal-dialog').html(res)
                 modal.show()
+                
+                function showFileInput(selectedFileType) {
+                var fileInputs = document.querySelectorAll('.file-input');
+
+                for (var i = 0; i < fileInputs.length; i++) {
+                    fileInputs[i].style.display = 'none';
+                }
+
+                if (selectedFileType === 'text') {
+                    document.getElementById('text').style.display = 'block';
+                } else if (selectedFileType === 'pdf') {
+                    document.getElementById('pdf').style.display = 'block';
+                } else if (selectedFileType === 'video') {
+                    document.getElementById('video').style.display = 'block';
+                }
+            }
+
+                // Trigger the function when the form loads
+                var selectedFileType = document.getElementById('type').value;
+                showFileInput(selectedFileType);
+
+                // Handle the change event
+                document.getElementById('type').addEventListener('change', function () {
+                    var selectedFileType = this.value;
+                    showFileInput(selectedFileType);
+                });
+
                 $('#modalAction').on('shown.bs.modal', function () {
                     $('#description').summernote({
                         placeholder: 'description...',
@@ -84,22 +111,6 @@
                         ata('id', 'dropdownMenu');
                     })
                     })
-                });
-                document.getElementById('type').addEventListener('change', function() {
-                    var selectedFileType = this.value;
-                    var fileInputs = document.querySelectorAll('.file-input');
-
-                    for (var i = 0; i < fileInputs.length; i++) {
-                        fileInputs[i].style.display = 'none';
-                    }
-
-                    if (selectedFileType === 'text') {
-                        document.getElementById('text').style.display = 'block';
-                    } else if (selectedFileType === 'pdf') {
-                        document.getElementById('pdf').style.display = 'block';
-                    } else if (selectedFileType === 'video') {
-                        document.getElementById('video').style.display = 'block';
-                    }
                 });
                 store();
             }
@@ -191,8 +202,35 @@
             method: 'get',
             url: `{{ url('content/') }}/${id}/edit`,
             success: function(res){
-                $('#modalAction').find('.modal-dialog').html(res)
-                modal.show()
+                $('#modalAction').find('.modal-dialog').html(res);
+                modal.show();
+
+                function showFileInput(selectedFileType) {
+                    var fileInputs = document.querySelectorAll('.file-input');
+
+                    for (var i = 0; i < fileInputs.length; i++) {
+                        fileInputs[i].style.display = 'none';
+                    }
+
+                    if (selectedFileType === 'text') {
+                        document.getElementById('text').style.display = 'block';
+                    } else if (selectedFileType === 'pdf') {
+                        document.getElementById('pdf').style.display = 'block';
+                    } else if (selectedFileType === 'video') {
+                        document.getElementById('video').style.display = 'block';
+                    }
+                }
+
+                // Trigger the function when the form loads
+                var selectedFileType = document.getElementById('type').value;
+                showFileInput(selectedFileType);
+
+                // Handle the change event
+                document.getElementById('type').addEventListener('change', function () {
+                    var selectedFileType = this.value;
+                    showFileInput(selectedFileType);
+                });
+
                 $('#modalAction').on('shown.bs.modal', function () {
                     $('#description').summernote({
                         placeholder: 'description...',
@@ -208,22 +246,6 @@
                         ata('id', 'dropdownMenu');
                     })
                     })
-                });
-                document.getElementById('type').addEventListener('change', function() {
-                    var selectedFileType = this.value;
-                    var fileInputs = document.querySelectorAll('.file-input');
-
-                    for (var i = 0; i < fileInputs.length; i++) {
-                        fileInputs[i].style.display = 'none';
-                    }
-
-                    if (selectedFileType === 'text') {
-                        document.getElementById('text').style.display = 'block';
-                    } else if (selectedFileType === 'pdf') {
-                        document.getElementById('pdf').style.display = 'block';
-                    } else if (selectedFileType === 'video') {
-                        document.getElementById('video').style.display = 'block';
-                    }
                 });
                 store()
             }

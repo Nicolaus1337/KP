@@ -96,18 +96,8 @@ class ContentController extends Controller
     public function show(Content $content)
     {
        
-        if($content->type == "text"){
-
             return view('admin.content-view', compact('content'));
-        }
-        if($content->type == "pdf"){
-
-            return view('admin.content-viewPdf', compact('content'));
-        }
-        if($content->type == "video"){
-
-            return view('admin.content-viewVideo', compact('content'));
-        }
+      
 
 
     }

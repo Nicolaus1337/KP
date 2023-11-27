@@ -30,14 +30,23 @@
                     <div class="col-md-6">
                     <label class="form-label">Type:</label>
                         <select class="form-select mb-3" aria-label="Default select example" name="type" id="type">
+                            @if($content->type == "text")
+                            <option value="text" >Text</option>
+                            @elseif($content->type == "pdf")
+                            <option value="pdf" >Pdf</option>
+                            @elseif($content->type == "video")
+                            <option value="video" >Video</option>
+
+                            @else
                             <option value="text" >Text</option>
                             <option value="pdf" >Pdf</option>
                             <option value="video" >Video</option>
+                            @endif
                             
                         </select>
                     </div>
 
-                    <div id="text" class="file-input">
+                    <div id="text" class="file-input" style="display: none;">
                         <label for="">Description:</label>
                         <textarea name="description" id="description" cols="30" rows="10">{{$content->description}}</textarea>
                     </div>

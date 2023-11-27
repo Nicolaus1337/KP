@@ -46,7 +46,6 @@
 </div>
 
 <script>
-    // JavaScript to update the content_name input with the selected content's name
     const contentSelect = document.getElementById('content_id');
     const contentNameInput = document.getElementById('content_name');
 

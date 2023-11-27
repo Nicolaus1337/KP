@@ -5,9 +5,7 @@
 @endpush
 @section('content')
 <div class="main-content">
-    <div class="title">
-        GUIDE
-    </div>
+    
     <div class="container">
                             <div class="row">
                                 <div class="col-md-4">
@@ -35,25 +33,24 @@
                     <div class="card-body">
                     
                         
-                        
-                    
-                       
+                  
 
-                        
-
-
-                        
-
-                        
-                    
 
                         <div class="row row-cols-1 row-cols-md-3 g-4 allguide" id="guide-card">
-                        @foreach($contents as $key => $konten)
+                        @forelse($contents as $key => $konten)
                             <div class="col-md-4">
                                 <div class="card mb-3" style="height: 330px;">
-                                @if ($contentImages[$key] !== null)
-                                    <img src="{{ asset($contentImages[$key]->image_path)  }}" style=" object-fit: contain; width: 100%;height: 200px;">
+                                @if ($konten->content->type === 'pdf')
+                                    <img src="{{asset('upload/img/pdf.png')}}" style="object-fit: contain; width: 100%; height: 200px;">
+                                @elseif ($konten->content->type === 'video')
+                                    <img src="{{ asset('upload/img/logodasar.png') }}" style="object-fit: contain; width: 100%; height: 200px;">
+                                @elseif (isset($contentImages[$key]) && $contentImages[$key] !== null)
+                                    <img src="{{ asset($contentImages[$key]->image_path) }}" style="object-fit: contain; width: 100%; height: 200px;">
+                                @else
+                                    
+                                    <img src="{{ asset('upload/img/logodasar.png') }}" style="object-fit: contain; width: 100%; height: 200px;">
                                 @endif
+
 
                                 
                                     <div class="card-body">
@@ -83,9 +80,11 @@
                                         </div>
                                              
                                     </div>
-                                </div>
-                            </div> 
-                        @endforeach
+                                    </div>
+                            </div>
+                        @empty
+                            <p>No guides found.</p>
+                        @endforelse
 
                        
                         

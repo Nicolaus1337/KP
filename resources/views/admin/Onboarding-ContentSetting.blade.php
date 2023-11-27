@@ -5,23 +5,25 @@
     @method('put')
     @endif
     <div class="modal-header">
-        <h5 class="modal-title" id="largeModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="largeModalLabel">Select Contents</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="row">
-        @foreach ($contents as $content)
-                
-        <div  class="form-check">
-                <input class="form-check-input" type="checkbox" name="content_id[]" value="{{ $content->id }}" {{ in_array($content->id, $obcontent) ? 'checked' : '' }}>
-                <label class="form-check-label" for="flexCheckDefault">
-                {{ $content->title }}
-                </label>
-                
-        </div>
-                
-         @endforeach
+        <div class="col-md-6">
+                <div class="mb-6">
+                    <label for="basicInput" class="form-label">Select Content</label>
+                    
+                    <select class="form-control" multiple="multiple" name="content_id[]" id="content_id">
+                        @foreach ($contents as $content)
+                            <option value="{{ $content->id }}" {{ in_array($content->id, $obcontent) ? 'selected' : '' }}>
+                                {{ $content->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
             
 

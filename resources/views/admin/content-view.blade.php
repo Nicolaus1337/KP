@@ -12,11 +12,28 @@
         <div class="row same-height">
             <div class="col-md-12">
                 <div class="card">
-                <h1 class="text-center">{{ $content->title }}</h1>
-
+                @if($content->type == "text")
+                
                     <div>
                         {!! $content->description !!}
                     </div>
+                @elseif($content->type == "pdf")
+                <h2 style="margin-top: 20px;margin-bottom: 20px;" class="text-center">{{ $content->title }}</h2>
+            
+                    <div class="row justify-content-center">
+                    <iframe  src="{{ asset('upload/' . $content->description) }}"  height="700">
+                            This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('upload/' . $content->description) }}">Download PDF</a>
+                    </iframe>
+                </div>
+                @elseif($content->type == "video")
+                <h2 style="margin-top: 20px;margin-bottom: 20px;" class="text-center">{{ $content->title }}</h2>
+
+                <center>
+                <video width="640" height="360" controls>
+                    <source src="{{ asset('upload/' . $content->description) }}" type="video/mp4">
+                </video>
+                </center>
+                @endif
                 </div>
             </div>
            

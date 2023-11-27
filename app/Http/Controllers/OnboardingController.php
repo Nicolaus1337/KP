@@ -88,6 +88,12 @@ class OnboardingController extends Controller
     {
    
         if($onboarding->status == 'published'){
+            $contentdone = $onboarding->contents2()
+            ->where('participant_id', Auth::id())
+            ->wherePivot('status', 'done')
+            ->pluck('content_id')
+            ->toArray();
+
             $content = $onboarding->contents2->find($contents->id);
 
             $user = auth()->user();
@@ -112,7 +118,7 @@ class OnboardingController extends Controller
                     $onboarding->participants()->updateExistingPivot($user, ['status' => $participantStatus]);
                 
             }
-            return view('admin.Onboarding-ContentView', compact('onboarding', 'content'));
+            return view('admin.Onboarding-ContentView', compact('onboarding', 'content','contentdone'));
         }
         
       

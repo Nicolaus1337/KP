@@ -20,14 +20,25 @@ class GuideController extends Controller
     public function index()
     {
         $this->authorize('read guide');
+
+        $visibility = Auth::user()->unit_kerja;
+
+
        
-        $contents = Guide::all();
+        $contentt = Guide::all();
         $contentImages = [];
 
+        
+        $contents = $contentt->filter(function ($guide) use ($visibility) {
+            $content = $guide->content;
+
+            return $content->visibility === null || $content->visibility === $visibility;
+        });
+
         foreach ($contents as $content) {
-        $firstContentImage = ContentImage::where('content_id', $content->id)->first();
+        $firstContentImage = ContentImage::where('content_id', $content->content_id)->first();
         $contentImages[] = $firstContentImage;
-    }
+        }
     
         return view('admin.Guide', compact('contents','contentImages'));
 

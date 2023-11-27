@@ -2,6 +2,8 @@
 @push('css')
 <link href="{{ asset ('')}}vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 <link href="{{ asset ('')}}vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 @endpush
 @section('content')
 <div class="main-content">
@@ -87,19 +89,25 @@
                                                         @elseif ($participant->pivot->status == 'in process')
                                                         <span class="badge bg-warning">{{ $participant->pivot->status }}</span>
                                                         @elseif ($participant->pivot->status == 'done')
-                                                        <span class="badge bg-succes">{{ $participant->pivot->status }}</span>
+                                                        <span class="badge bg-success">{{ $participant->pivot->status }}</span>
                                                         @endif
                                                         
                                                         
                                                     </td>
-                                                    <td>
+                                                    <td  style="padding-top: 12px;">
                                                         <div class="progress" style="width: 100px;">
                                                             @if ($participant->pivot->status == 'not started')
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="progress-label">0%</span>    
+                                                                </div>
                                                             @elseif ($participant->pivot->status == 'in process')
-                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="progress-label">50%</span>    
+                                                                </div>
                                                             @elseif ($participant->pivot->status == 'done')
-                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="progress-label">100%</span>    
+                                                                </div>
                                                             @endif
                                                         </div>
                                                     </td>
@@ -293,6 +301,7 @@
 @endsection
 @push('js')
 <script src="{{ asset('')}}vendor/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="{{ asset('')}}vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('')}}vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
@@ -361,6 +370,10 @@ function store(){
         success: function(res){
             $('#modalAction').find('.modal-dialog').html(res)
             modal.show()
+            $("#user_id").select2({
+                dropdownParent: $('#modalAction'),
+                width: "100%"
+                });
             store()
         }
      })
@@ -401,6 +414,10 @@ $('#table-content').on('click','.action', function(){
         success: function(res){
             $('#modalAction').find('.modal-dialog').html(res)
             modal.show()
+            $("#content_id").select2({
+                dropdownParent: $('#modalAction'),
+                width: "100%"
+                });
             store()
         }
      })
