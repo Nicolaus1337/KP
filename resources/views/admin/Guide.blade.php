@@ -6,24 +6,26 @@
 @section('content')
 <div class="main-content">
     
-    <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    @if (auth()->user()->can('create guide'))
-                                    <button type="button" class="btn btn-primary mb-3 btn-add">Tambah Guide</button>
-                                    @endif
-
-                                    
-                                </div>
-
-                                <div class="col-md-4 offset-md-4">
-                                    <div class="input-group">
-                                        <input type="search" class="form-control" placeholder="search" id="search" name="search">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    @if (auth()->user()->can('create guide'))
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-primary mb-3 btn-add" style="margin-left: 8px;">Tambah Guide</button>
+            </div>
+            <div class="col offset-md-4">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="search" id="search" name="search" style="margin-right: 8px;">
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="row">
+            <div class="col-md-3 offset-md-9">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Search" id="search" name="search" style="margin-right: 8px;margin-bottom: 20px;">
+                </div>
+            </div>
+        </div>
+    @endif
    
     <div class="content-wrapper">
         <div class="row same-height">

@@ -8,21 +8,12 @@
 <div class="main-content">
 
 
-                <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
+                
                                     
-                                <a href="{{route('onboarding_user.index')}}"><button type="button" class="btn btn-primary mb-3 btn-add ">Kembali</button></a>
+                                <a href="{{route('onboarding_user.index')}}"><button type="button" class="btn btn-primary mb-3 btn-add "  style="margin-left: 8px;">Kembali</button></a>
 
                                     
-                                </div>
                                 
-                                
-                                
-                               
-                                
-                            </div>
-                        </div>
                
                
     <div class="content-wrapper">
