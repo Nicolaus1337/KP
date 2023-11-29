@@ -23,7 +23,7 @@ class OnboardingController extends Controller
      */
     public function index(onboardingDataTable  $dataTable)
     {
-        $this->authorize('read onboarding');
+        $this->authorize('read onboarding admin');
         return $dataTable->render('admin.Onboarding');
     }
 

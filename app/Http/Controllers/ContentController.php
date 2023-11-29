@@ -226,7 +226,8 @@ class ContentController extends Controller
     private function processImages($description)
     {
         $dom = new DOMDocument();
-        $dom->loadHTML($description, 9);
+        
+        $dom->loadHTML($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images = $dom->getElementsByTagName('img');
         $imagePaths = [];
@@ -243,6 +244,7 @@ class ContentController extends Controller
             }
         }
 
+        // Save the HTML without adding default tags
         $description = $dom->saveHTML();
 
         return $imagePaths;

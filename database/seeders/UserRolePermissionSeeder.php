@@ -172,7 +172,7 @@ class UserRolePermissionSeeder extends Seeder
             'name' => "create onboarding"
         ]);
         $permission = Permission::create([
-            'name' => "read onboarding"
+            'name' => "read onboarding admin"
         ]);
         $permission = Permission::create([
             'name' => "read onboarding user"
@@ -236,7 +236,7 @@ class UserRolePermissionSeeder extends Seeder
             "update content",
             "delete content",
             "create onboarding",
-            "read onboarding",
+            "read onboarding admin",
             "update onboarding",
             "delete onboarding",
             "create guide",
@@ -252,14 +252,17 @@ class UserRolePermissionSeeder extends Seeder
             "create data unit kerja",
             "read data unit kerja",
             "update data unit kerja",
-            "delete data unit kerja"
+            "delete data unit kerja",
+            "read onboarding user"
+            
         ]);
 
         $role_AdminDataUser->givePermissionTo([
             "create data user",
             "read data user",
             "update data user",
-            "delete data user"
+            "delete data user",
+            "read onboarding user"
         ]);
 
         $role_AdminRolePerm->givePermissionTo([
@@ -272,7 +275,8 @@ class UserRolePermissionSeeder extends Seeder
             "read permission",
             "update permission",
             "delete permission",
-            "assign permission"
+            "assign permission",
+            "read onboarding user"
         ]);
 
         $role_AdminKonten->givePermissionTo([
@@ -281,7 +285,7 @@ class UserRolePermissionSeeder extends Seeder
             "update content",
             "delete content",
             "create onboarding",
-            "read onboarding",
+            "read onboarding admin",
             "update onboarding",
             "delete onboarding",
             "create guide",

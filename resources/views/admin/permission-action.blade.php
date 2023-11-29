@@ -5,7 +5,7 @@
     @method('put')
     @endif
     <div class="modal-header">
-        <h5 class="modal-title" id="largeModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="largeModalLabel">PERMISSION</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
     </div>
@@ -13,15 +13,15 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label for="basicInput" class="form-label">Basic Input</label>
+                    <label for="basicInput" class="form-label">Nama Permission</label>
                     <input type="text" placeholder="Permission Name" value="{{ $permission->name }}" name="name" class="form-control" id="permissionName">
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label for="basicInput" class="form-label">Basic Input</label>
-                    <input type="text" placeholder="Guard Name" value="{{ $permission->guard_name }}" name="guard_name" class="form-control" id="guardName">
+                    
+                    <input type="text" placeholder="Guard Name" value="{{ $permission->guard_name }}" name="guard_name" class="form-control" id="guardName" hidden>
                 </div>
             </div>
 

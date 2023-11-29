@@ -92,7 +92,7 @@ body h1{
     border: none;
     outline: none;
     border: 1px solid rgba(255, 255, 255, 2);
-    border-radius: 30px;
+    border-radius: 10px;
     font-size: 16px;
     color: #fff;
     padding: 20px 45px 20px 20px;
@@ -118,7 +118,7 @@ body h1{
     background: #fff;
     border: none;
     outline: none;
-    border-radius: 30px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     cursor: pointer;
     font-size: 16px;

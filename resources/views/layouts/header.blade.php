@@ -6,6 +6,9 @@
                 </div>
                 <div class="header-content">
                 <div class="theme-switch-icon" hidden></div>
+                <div style="margin-top:10px;">
+                    <p> Hi, {{auth()->user()->name}}!</p>
+                </div>
                 <form method="POST" action="{{ route('logout') }}">
                 @csrf
 

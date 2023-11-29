@@ -5,7 +5,7 @@
     @method('put')
     @endif
     <div class="modal-header">
-        <h5 class="modal-title" id="extralargeModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="extralargeModalLabel">CONTENT</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
     </div>
@@ -13,9 +13,7 @@
         <div class="container p-4 ">
             <div class="row justify-content-md-center">
                 <div class="col-md-12">
-                <div class="text-center">
-                    <h1 class="">ADD CONTENT</h1>
-                </div> 
+                
                 
                 
                     <label for="">Title:</label>
