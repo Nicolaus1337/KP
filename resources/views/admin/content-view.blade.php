@@ -14,7 +14,7 @@
                 <div class="card">
                 @if($content->type == "text")
                 
-                    <div>
+                    <div style="margin: 20px;">
                         {!! $content->description !!}
                     </div>
                 @elseif($content->type == "pdf")

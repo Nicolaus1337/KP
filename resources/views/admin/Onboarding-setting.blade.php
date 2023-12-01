@@ -53,7 +53,7 @@
                                 <div class="d-flex flex-column align-items-center text-center p-3 py-4">
                                    
                                     <img class="mb-2" style=" object-fit: contain;"  height="253" width="450" src="@if($onboarding->onboarding_image == null) {{ asset("upload/img/logodasar.png") }}  @else {{ asset("storage/$onboarding->onboarding_image") }} @endif" id="image_preview_container">
-                                    @if($onboarding->status == 'on going' )
+                                    @if($onboarding->status == 'published' )
                                     <span class="font-weight-bold">
                                         <input type="file" name="onboarding_image" id="onboarding_image"  class="form-control" disabled>
                                     </span>
