@@ -64,8 +64,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('onboarding_user',OnboardingUserController::class);
-    Route::resource('assignparticipant',AssignParticipant::class);
-    
+ 
     
     Route::get('onboarding/{onboarding}/contentsview/{contents}', [OnboardingController::class, 'showcontent'])->name('onboarding.showcontent');
 

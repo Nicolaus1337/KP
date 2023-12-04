@@ -56,6 +56,9 @@ class onboardingUserDataTable extends DataTable
            
             
         });
+
+        $query->where('status', 'published');
+
         
         return $query;
        
