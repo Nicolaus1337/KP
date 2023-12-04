@@ -90,11 +90,12 @@ class ContentDataTable extends DataTable
             Column::make('id'),
             Column::make('title'),
             Column::make('type'),
+            Column::make('visibility'),
             
             Column::computed('action')
                     ->exportable(false)
                     ->printable(false)
-                    ->width(500)
+                    ->width(200)
                     ->addClass('text-center')
         ];
     }

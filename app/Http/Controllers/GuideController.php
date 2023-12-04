@@ -106,19 +106,7 @@ class GuideController extends Controller
      */
     public function show(Content $content)
     {
-         
-        if($content->type == "text"){
-
-            return view('admin.content-view', compact('content'));
-        }
-        if($content->type == "pdf"){
-
-            return view('admin.content-viewPdf', compact('content'));
-        }
-        if($content->type == "video"){
-
-            return view('admin.content-viewVideo', compact('content'));
-        }
+        
     }
 
     /**
@@ -161,7 +149,8 @@ class GuideController extends Controller
                         ->get();
 
         foreach ($guides as $guide) {
-            $contentImages = ContentImage::where('content_id', $guide->id)->first();
+            
+            $contentImages = ContentImage::where('content_id', $guide->content_id)->first();
 
             $tagNames = $guide->tag->pluck('name')->toArray(); // Get all tag names for the guide
 
